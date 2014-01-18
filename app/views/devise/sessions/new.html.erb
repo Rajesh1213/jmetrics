@@ -1,0 +1,24 @@
+<div id="login-wraper">
+	<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => "form login-form"} ) do |f| %>
+	  
+	  <legend><span class="blue">Project Metrics</span></legend>
+	  
+	  <div class ="body">
+		  <label><%= f.label :email %></label>
+		  <%= f.email_field :email, :autofocus => true %>
+
+		  <label><%= f.label :password %></label>
+		  <%= f.password_field :password %>
+	  </div>
+    
+    <div class="footer">
+          <label class="checkbox inline">
+              <% if devise_mapping.rememberable? -%>
+	              <%= f.check_box :remember_me %> Remember me
+	            <% end -%>
+          </label>
+          <%= f.submit "Sign in", :class => "btn btn-success" %>
+      </div>
+	<% end %>
+
+</div>
