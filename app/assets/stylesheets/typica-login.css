@@ -9,11 +9,14 @@ html {
 
 /* line 13, ../sass/typica-login.scss */
 body {
-  background: url(bg1.png) no-repeat center center fixed;
+  /*background: url(bg1.png) no-repeat center center fixed;*/
+  background-color: #ccc;
+  background-image: linear-gradient(transparent 50%, rgba(255, 255, 255, 0.5) 25%);
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  background-size: 4px 4px;
 }
 @media (min-width: 1024px) {
   /* line 13, ../sass/typica-login.scss */
@@ -24,7 +27,6 @@ body {
 
 
 .block{
-  background-color: #fff;
   padding:10px;
   height:100%;
 }
