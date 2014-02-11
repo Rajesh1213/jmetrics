@@ -1,6 +1,15 @@
-.well{:style => "margin-top: 10px;"}
+/ .well{:style => "margin-top: 10px;"}
+.col-md-12
+  %h3{:style => "text-align:center;"}
+    = image_tag "http://blogs.atlassian.com/wp-content/uploads/Atlassian-ondemand-logo.png", :size => '100x100'
+    Project Name Here
   .col-md-12
-    %h2 Project Metrics
-    .col-md-12
-      12
-  .clearfix    
+    .panel.panel-default
+      .panel-heading Metric: Work request Delivery Cycle Time; Work Request Delivery Effort
+      .panel-body
+        = render :partial => "work_req_del_cycle_time"
+    .panel.panel-default
+      .panel-heading Metric: Work Request Complexity
+      .panel-body
+        = render :partial => "work_req_complexity"
+.clearfix    
