@@ -1,0 +1,64 @@
+.col-md-12{:style => "text-align:center;"}
+  .col-md-3
+    %div{:style =>"text-align:center;"}
+      %input.work_req_assigned{:type => "text", :value => "9"}
+    %div{:style =>"text-align:center;"}
+      No. of Work Requests Assigned
+  .col-md-2
+    %div{:style =>"text-align:center;"}
+      %input.work_req_commited{:type => "text", :value => "5"}
+    %div{:style =>"text-align:center;"}
+      No. of Work Requests Committed
+  .col-md-2
+    %div{:style =>"text-align:center;"}
+      %input.work_req_del_on_time{:type => "text", :value => "3"}
+    %div{:style =>"text-align:center;"}
+      No. of Work Requests Delivered On-time
+  .col-md-2
+    %div{:style =>"text-align:center;"}
+      %input.work_req_del_delayed{:type => "text", :value => "1"}
+    %div{:style =>"text-align:center;"}
+      No. of Work Requests Delivered With Delay
+  .col-md-3
+    %div{:style =>"text-align:center;"}
+      %input.work_req_delivered{:type => "text", :value => "4"}
+    %div{:style =>"text-align:center;"}
+      Total Work Requests Delivered (Nos.)
+
+
+:javascript
+  $(function() {
+      $(".work_req_assigned").knob({
+        'max':9,
+        'readOnly':true,
+        'width': '60%',
+        'skin':'torn'
+      });
+
+      $(".work_req_commited").knob({
+        'max':9,
+        'readOnly':true,
+        'width': '60%'
+      });
+
+      $(".work_req_del_on_time").knob({
+        'max':9,
+        'readOnly':true,
+        'fgColor':'#DFF0D7',
+        'width': '60%'
+      });
+
+      $(".work_req_del_delayed").knob({
+        'max':9,
+        'readOnly':true,
+        'fgColor':'#f2dede',
+        'width': '60%'
+      });
+
+       $(".work_req_delivered").knob({
+        'max':9,
+        'readOnly':true,
+        'fgColor':'#9fedad',
+        'width': '60%'
+      });
+  });
