@@ -6,6 +6,7 @@ gem 'rails', '4.0.0'
 # Use sqlite3 as the database for Active Record
 gem 'devise'
 gem "haml"
+gem 'rest-client'
 
 group :development, :test do
   gem 'sqlite3'

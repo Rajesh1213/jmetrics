@@ -8,16 +8,14 @@
     %th.info Total Work Requests Delivered (Nos.)
   %tr
     %td Jan 2014
-    %td 9
-    %td 5
-    %td 4
-    %td 6
-    %td 5
-  %tr
-    %td Dec 2014
-    %td 9
-    %td 5
-    %td 4
-    %td 6
-    %td 5  
+    %td
+      = @work_req_assigned
+    %td
+      = @work_req_committed
+    %td
+      = @work_req_on_time
+    %td
+      = @work_req_delayed
+    %td
+      = @total_work_req_delivered
      

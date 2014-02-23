@@ -79,4 +79,6 @@ JiraMetrics::Application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   config.assets.initialize_on_precompile = false
+  USERNAME = 'mukul.chourey'
+  PASSWORD = 'Passw0rd#'
 end

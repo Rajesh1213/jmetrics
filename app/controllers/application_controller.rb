@@ -1,6 +1,9 @@
 class ApplicationController < ActionController::Base
-  # require '../../lib/restclientjira.rb'
-  # include RestClientJira
+  require 'rest_client'
+  require 'json'
+  require 'time'
+  require 'restclientjira.rb'
+  include RestClientJira
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
