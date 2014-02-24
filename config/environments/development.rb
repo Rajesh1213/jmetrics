@@ -28,6 +28,6 @@ JiraMetrics::Application.configure do
   config.assets.debug = true
 
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
-  USERNAME = 'mukul.chourey'
-  PASSWORD = 'Passw0rd#'
+  USERNAME = 'username'
+  PASSWORD = 'password'
 end
