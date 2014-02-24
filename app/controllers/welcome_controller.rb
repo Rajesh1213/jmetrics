@@ -3,7 +3,7 @@ class WelcomeController < ApplicationController
   
   def index
     #total_work_req_assigned
-    response = post_search('search','{"jql":"project=UT AND created>=2014-01-01 AND created<=2014-01-30 AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029","fields":["id","key"]}}')
+    response = post_search('search','{"jql":"project=UT AND created>=2014-01-01 AND created<=2014-02-24 AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029","fields":["id","key"]}}')
     parsed_response=JSON.parse(response)
     @work_req_assigned = parsed_response['total']
     puts "work_req_assigned... #{@work_req_assigned}"

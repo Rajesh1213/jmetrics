@@ -1,27 +1,28 @@
 .col-md-12{:style => "text-align:center;"}
   .col-md-3
     %div{:style =>"text-align:center;"}
-      %input.work_req_assigned{:type => "text", :value => "9"}
+      %input.work_req_assigned{:type => "text", :value => @work_req_assigned}
     %div{:style =>"text-align:center;"}
       No. of Work Requests Assigned
+      = @work_req_assigned
   .col-md-2
     %div{:style =>"text-align:center;"}
-      %input.work_req_commited{:type => "text", :value => "5"}
+      %input.work_req_commited{:type => "text", :value => @work_req_committed}
     %div{:style =>"text-align:center;"}
       No. of Work Requests Committed
   .col-md-2
     %div{:style =>"text-align:center;"}
-      %input.work_req_del_on_time{:type => "text", :value => "3"}
+      %input.work_req_del_on_time{:type => "text", :value => @work_req_on_time}
     %div{:style =>"text-align:center;"}
       No. of Work Requests Delivered On-time
   .col-md-2
     %div{:style =>"text-align:center;"}
-      %input.work_req_del_delayed{:type => "text", :value => "1"}
+      %input.work_req_del_delayed{:type => "text", :value => @work_req_delayed}
     %div{:style =>"text-align:center;"}
       No. of Work Requests Delivered With Delay
   .col-md-3
     %div{:style =>"text-align:center;"}
-      %input.work_req_delivered{:type => "text", :value => "4"}
+      %input.work_req_delivered{:type => "text", :value => @total_work_req_delivered}
     %div{:style =>"text-align:center;"}
       Total Work Requests Delivered (Nos.)
 
@@ -29,34 +30,34 @@
 :javascript
   $(function() {
       $(".work_req_assigned").knob({
-        'max':9,
+        'max':#{@work_req_assigned},
         'readOnly':true,
         'width': '60%',
         'skin':'torn'
       });
 
       $(".work_req_commited").knob({
-        'max':9,
+        'max':#{@work_req_assigned},
         'readOnly':true,
         'width': '60%'
       });
 
       $(".work_req_del_on_time").knob({
-        'max':9,
+        'max':#{@work_req_assigned},
         'readOnly':true,
         'fgColor':'#DFF0D7',
         'width': '60%'
       });
 
       $(".work_req_del_delayed").knob({
-        'max':9,
+        'max':#{@work_req_assigned},
         'readOnly':true,
         'fgColor':'#f2dede',
         'width': '60%'
       });
 
        $(".work_req_delivered").knob({
-        'max':9,
+        'max':#{@work_req_assigned},
         'readOnly':true,
         'fgColor':'#9fedad',
         'width': '60%'
