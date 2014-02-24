@@ -1,0 +1,56 @@
+{
+    "name": "Jan 2014",
+    "children": [
+        {
+            "name": "High Complexity: 10",
+            "children": [
+                {
+                    "name": "NR 5 ",
+                    "size": 3938
+                },
+                {
+                    "name": "CR 3 ",
+                    "size": 3812
+                },
+                {
+                    "name": "DD 2 ",
+                    "size": 6714
+                }
+            ]
+        },
+        {
+            "name": "Medium Complexity: 4",
+            "children": [
+                {
+                    "name": "New Requirements 1",
+                    "size": 3534
+                },
+                {
+                    "name": "Change Requests 3",
+                    "size": 5731
+                },
+                {
+                    "name": "Delivered Defects 0",
+                    "size": 7840
+                }
+            ]
+        },
+        {
+            "name": "Low Complexity: 6",
+            "children": [
+                  {
+                    "name": "New Requirements 4",
+                    "size": 3534
+                },
+                {
+                    "name": "Change Requests 1",
+                    "size": 5731
+                },
+                {
+                    "name": "Delivered Defects 1",
+                    "size": 7840
+                }
+            ]
+        }
+    ]
+}

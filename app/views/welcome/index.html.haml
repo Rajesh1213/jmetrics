@@ -17,5 +17,15 @@
     .panel.panel-default
       .panel-heading Metric: Work Request Complexity
       .panel-body
-        = render :partial => "work_req_complexity"
+        / = render :partial => "work_req_complexity"
+        .col-md-6
+          = render :partial => "work_req_complexity"
+        .col-md-6{:style => "text-align:center;"}
+          = render :partial => "workrequest_complexity_tree"
+      %div
+        .progress
+          .progress-bar.progress-bar-success{:style => "width:60%"}
+            Work Requests Delivered On-time: 60%
+          .progress-bar.progress-bar-warning{:style => "width: 40%"} 
+            Work Request Backlog: 40%   
 .clearfix
