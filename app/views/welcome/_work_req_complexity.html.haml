@@ -11,7 +11,8 @@
   %tr
     %td{:rowspan => "3"} Jan 2014
     %td.danger High
-    %td 5
+    %td 
+      = @complexity_counts['High']
     %td 4
     %td 6
     %td 5
@@ -19,34 +20,16 @@
     %td{:rowspan => "3", :style => "text-align:center;font-size:24px;padding-top:35px;"} 40%
   %tr
     %td.warning Medium
-    %td 5
+    %td
+      = @complexity_counts['Medium']
     %td 4
     %td 6
     %td 5
   %tr
     %td.success Low
-    %td 5
+    %td 
+      = @complexity_counts['Low']
     %td 4
     %td 6
     %td 5
-  %tr
-    %td{:rowspan => "3"} Dec 2014
-    %td.danger High
-    %td 5
-    %td 4
-    %td 6
-    %td 5
-    %td{:rowspan => "3", :style => "text-align:center;font-size:20px;padding-top:35px;"} 50%
-    %td{:rowspan => "3", :style => "text-align:center;font-size:20px;padding-top:35px;"} 60%
-  %tr
-    %td.warning Medium
-    %td 5
-    %td 4
-    %td 6
-    %td 5
-  %tr
-    %td.success Low
-    %td 5
-    %td 4
-    %td 6
-    %td 5 
+  
