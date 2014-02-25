@@ -13,23 +13,34 @@
     %td.danger High
     %td 
       = @complexity_counts['High']
-    %td 4
-    %td 6
-    %td 5
-    %td{:rowspan => "3", :style => "text-align:center;font-size:24px;padding-top:35px;"} 60%
-    %td{:rowspan => "3", :style => "text-align:center;font-size:24px;padding-top:35px;"} 40%
+    %td
+      = @complexity_requests_hash['High'].present? ? get_request_count('New Requirement', @complexity_requests_hash['High']) : 0
+    %td
+      = @complexity_requests_hash['High'].present? ? get_request_count('Change Request', @complexity_requests_hash['High']) : 0
+    %td
+      = @complexity_requests_hash['High'].present? ? get_request_count('Delivery Defect', @complexity_requests_hash['High']) : 0
+    %td{:rowspan => "3", :style => "text-align:center;font-size:24px;padding-top:35px;"}
+      = percent_of(@work_req_on_time, @work_req_committed)
+    %td{:rowspan => "3", :style => "text-align:center;font-size:24px;padding-top:35px;"}
+      = @work_req_assigned - @total_work_req_delivered
   %tr
     %td.warning Medium
     %td
       = @complexity_counts['Medium']
-    %td 4
-    %td 6
-    %td 5
+    %td
+      = @complexity_requests_hash['Medium'].present? ? get_request_count('New Requirement', @complexity_requests_hash['Medium']) : 0
+    %td
+      = @complexity_requests_hash['Medium'].present? ? get_request_count('Change Request', @complexity_requests_hash['Medium']) : 0
+    %td
+      = @complexity_requests_hash['Medium'].present? ? get_request_count('Delivery Defect', @complexity_requests_hash['Medium']) : 0 
   %tr
     %td.success Low
     %td 
       = @complexity_counts['Low']
-    %td 4
-    %td 6
-    %td 5
+    %td
+      = @complexity_requests_hash['Low'].present? ? get_request_count('New Requirement', @complexity_requests_hash['Low']) : 0
+    %td
+      = @complexity_requests_hash['Low'].present? ? get_request_count('Change Request', @complexity_requests_hash['Low']) : 0
+    %td
+      = @complexity_requests_hash['Low'].present? ? get_request_count('Delivery Defect', @complexity_requests_hash['Low']) : 0
   

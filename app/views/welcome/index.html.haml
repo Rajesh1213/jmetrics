@@ -17,11 +17,14 @@
     .panel.panel-default
       .panel-heading Metric: Work Request Complexity
       .panel-body
-        / = render :partial => "work_req_complexity"
         .col-md-6
           = render :partial => "work_req_complexity"
         .col-md-6{:style => "text-align:center;"}
           = render :partial => "workrequest_complexity_tree"
+    .panel.panel-default
+      .panel-heading Delivery Management Effectiveness
+      .panel-body
+        / = render :partial => "work_req_complexity"
       %div
         .progress
           .progress-bar.progress-bar-success{:style => "width:60%"}
