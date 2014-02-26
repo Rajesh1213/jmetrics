@@ -1,0 +1,6 @@
+= form_tag("/", method: "get") do
+  From Date:
+  = select_date(Time.now, {order: [:day, :month , :year], prefix: 'from_date'})
+  To Date:
+  = select_date(Time.now, {order: [:day, :month , :year], prefix: 'to_date'})
+  = submit_tag("Get Data")

@@ -2,13 +2,26 @@ class WelcomeController < ApplicationController
   before_filter :authenticate_user!
   
   def index
+    puts "params.. #{params.inspect}"
+    if params[:from_date].present? && params[:to_date].present?
+      from_date = get_date(params[:from_date])
+      to_date = get_date(params[:to_date])
+      puts "from_date... #{from_date}"
+      puts "to_date..#{to_date}"
+    else
+      from_date = Time.now.strftime("%Y-%m-%d")
+      to_date = Time.now.strftime("%Y-%m-%d")
+    end
+    
+    puts "from_date..#{from_date}"
+    puts "to_date..#{to_date}"
     #total_work_req_assigned
-    response = post_search('search','{"jql":"project=UT AND created>=2014-01-01 AND created<=2014-02-24 AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029","fields":["id","key"]}}')
+    response = post_search('search','{"jql":"project=UT AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029","fields":["id","key"]}}')
     parsed_response=JSON.parse(response)
     @work_req_assigned = parsed_response['total']
 
     #work reqst committed
-    response = post_search('search','{"jql":"project=UT AND created>=2014-01-01 AND created<=2014-01-30 AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029 AND duedate IS NOT EMPTY","fields":["id","key","duedate","resolutiondate","issuetype","customfield_10024"]}}')
+    response = post_search('search','{"jql":"project=UT AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029 AND duedate IS NOT EMPTY","fields":["id","key","duedate","resolutiondate","issuetype","customfield_10024"]}}')
     parsed_response=JSON.parse(response)
 
     @work_req_committed = parsed_response['total']

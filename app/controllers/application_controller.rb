@@ -9,10 +9,15 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   
   def post_search(sub_url,payload)
+    puts "payload.. #{payload}"
     response = RestClientJira.post(sub_url, payload)
   end
 
   def get_search(sub_url)
     response = RestClientJira.get(sub_url)	  
+  end
+
+  def get_date(date_hash)
+    return "#{date_hash['year']}-#{date_hash['month']}-#{date_hash['day']}"
   end
 end
