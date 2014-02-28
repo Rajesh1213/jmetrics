@@ -9,7 +9,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   
   def post_search(sub_url,payload)
-    puts "payload.. #{payload}"
     response = RestClientJira.post(sub_url, payload)
   end
 
