@@ -1,6 +1,16 @@
 = form_tag("/", method: "get") do
+  
+  Project:
+  = select_tag "Project", options_for_select(get_projects_list), prompt: "Select Project"
+
+  %br
+  %br
   From Date:
   = select_date(Time.now, {order: [:day, :month , :year], prefix: 'from_date'})
+  
   To Date:
   = select_date(Time.now, {order: [:day, :month , :year], prefix: 'to_date'})
+  %br
+
   = submit_tag("Get Data")
+
