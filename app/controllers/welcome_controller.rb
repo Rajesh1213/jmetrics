@@ -23,12 +23,13 @@ class WelcomeController < ApplicationController
     total = parsed_response['total']
     @total_work_requests_committed = []
 
-    # #get sub-tasks of all tasks
-    # parsed_response['issues'].each do |issue|
-    #   @total_work_requests_committed << issue
-    #   sub_tasks = get_sub_tasks(from_date, to_date, issue['key'], project)
-    #   @total_work_requests_committed << sub_tasks if sub_tasks.present?
-    # end
+    #get sub-tasks of all tasks
+    parsed_response['issues'].each do |issue|
+      @total_work_requests_committed << issue
+      sub_tasks = get_sub_tasks(from_date, to_date, issue['key'], project)
+      @total_work_requests_committed << sub_tasks if sub_tasks.present?
+    end
+
 
     @total_work_requests_committed = @total_work_requests_committed.flatten
     @work_req_committed = @total_work_requests_committed.count
