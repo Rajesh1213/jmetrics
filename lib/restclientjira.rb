@@ -1,6 +1,8 @@
 module RestClientJira
   USERNAME = ''
   PASSWORD = ''
+
+  #this is a old url  
   REQUEST_URL = "https://seneca-global.atlassian.net/rest/api/2"
   
   def self.auth
