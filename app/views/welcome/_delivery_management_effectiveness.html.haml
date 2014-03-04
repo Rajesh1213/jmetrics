@@ -4,6 +4,7 @@
     %th{:colspan => "3", :scope => "colgroup", :align => "center"}Work Request Delivery Cycle Time
     %th{:colspan => "3", :scope => "colgroup", :align => "center"}Work Request Delivery Effort
   %tr
+    %th 
     %th Minimum
     %th Maximum
     %th Average
@@ -21,6 +22,8 @@
       = @complexity_requests_hash['High'].present? ? get_request_count('Change Request', @complexity_requests_hash['High']) : 0
     %td
       = @complexity_requests_hash['High'].present? ? get_request_count('Delivery Defect', @complexity_requests_hash['High']) : 0
+    %td
+      = @complexity_requests_hash['High'].present? ? get_request_count('Delivery Defect', @complexity_requests_hash['High']) : 0  
   %tr
     %td.danger Minimum
     %td 
@@ -31,7 +34,8 @@
       = @complexity_requests_hash['High'].present? ? get_request_count('Change Request', @complexity_requests_hash['High']) : 0
     %td
       = @complexity_requests_hash['High'].present? ? get_request_count('Delivery Defect', @complexity_requests_hash['High']) : 0
-  
+    %td
+      = @complexity_requests_hash['High'].present? ? get_request_count('Delivery Defect', @complexity_requests_hash['High']) : 0
   %tr
     %td.danger Low
     %td 
@@ -42,4 +46,6 @@
       = @complexity_requests_hash['High'].present? ? get_request_count('Change Request', @complexity_requests_hash['High']) : 0
     %td
       = @complexity_requests_hash['High'].present? ? get_request_count('Delivery Defect', @complexity_requests_hash['High']) : 0
+    %td
+      = @complexity_requests_hash['High'].present? ? get_request_count('Delivery Defect', @complexity_requests_hash['High']) : 0  
               
