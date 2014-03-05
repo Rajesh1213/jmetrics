@@ -14,29 +14,19 @@ class WelcomeController < ApplicationController
     
     #total_work_req_assigned
     response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029","fields":["id","key"]}}')
-    parsed_response=JSON.parse(response)    
-    @work_req_assigned = parsed_response['total']
+    parsed_response=JSON.parse(response)
+    @work_req_assigned = parsed_response['issues']
 
     #work reqst committed
-    response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029 AND duedate IS NOT EMPTY","fields":["id","key","duedate","resolutiondate","issuetype","customfield_10024","timespent"]}}')
+    response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029 AND duedate IS NOT EMPTY"}}')
     parsed_response = JSON.parse(response)
     total = parsed_response['total']
-    @total_work_requests_committed = []
+    @total_work_requests_committed = parsed_response['issues']
+    @work_req_committed = @total_work_requests_committed
 
-    #get sub-tasks of all tasks
-    parsed_response['issues'].each do |issue|
-      @total_work_requests_committed << issue
-      sub_tasks = get_sub_tasks(from_date, to_date, issue['key'], project)
-      @total_work_requests_committed << sub_tasks if sub_tasks.present?
-    end
-
-
-    @total_work_requests_committed = @total_work_requests_committed.flatten
-    @work_req_committed = @total_work_requests_committed.count
-
-    @work_req_delayed = 0
-    @work_req_on_time = 0
-    @work_req_not_delivered = 0
+    @work_req_delayed = []
+    @work_req_on_time = []
+    @work_req_not_delivered = []
     complexity = []
     @complexity_requests_hash = Hash.new
 
@@ -53,49 +43,21 @@ class WelcomeController < ApplicationController
                                                                                    @complexity_requests_hash[issue_complexity] + [issuetype]
         
         if resol_date > due_date
-          @work_req_delayed += 1
+          @work_req_delayed << issue
         elsif resol_date <= due_date
-          @work_req_on_time += 1
+          @work_req_on_time << issue
         end
       else
-        @work_req_not_delivered += 1
+        @work_req_not_delivered << issue
       end
     end
 
     @total_work_req_delivered = @work_req_on_time + @work_req_delayed
     @complexity_counts = Hash.new(0)
     complexity.each { |name| @complexity_counts[name] += 1 }
-  end
 
-  #customfield_10042 -> task started date
-  def delivery_management_effectiveness
-    #work reqst committed
-    response = post_search('search','{"jql":"project=UT AND created>=2014-01-01 AND created<=2014-01-31 AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029 AND duedate IS NOT EMPTY","fields":["id","key","duedate","resolutiondate","issuetype","customfield_10024","timespent","customfield_10042"]}}')
-    parsed_response=JSON.parse(response)
-    
-    issues_committed = parsed_response['issues']
-    @total_work_requests_committed = []
-    @total_work_requests_delivered = []
-
-    #get sub-tasks of all tasks
-    parsed_response['issues'].each do |issue|
-      @total_work_requests_committed << issue
-      sub_tasks = get_sub_tasks("2014-01-01", "2014-01-31", issue['key'], 'UT')
-      @total_work_requests_committed << sub_tasks if sub_tasks.present?
-    end
-
-    @total_work_requests_committed = @total_work_requests_committed.flatten
-
-    @total_work_requests_committed.each do |issue|
-      if issue['fields']['resolutiondate']
-        resol_date = Time.parse(issue['fields']['resolutiondate'])
-        due_date = Time.parse(issue['fields']['duedate'])
-
-        @total_work_requests_delivered << issue if (resol_date > due_date || resol_date <= due_date)
-      end
-    end
-    @total_work_requests_delivered = @total_work_requests_delivered.flatten
-    all_complex_issues = get_all_complex_issues(@total_work_requests_delivered)
+    # delivery_management_effectiveness 
+    all_complex_issues = get_all_complex_issues(@total_work_req_delivered)
 
     @complexity_cycle_hash = get_delivery_cycle_data(all_complex_issues)
     puts "@complexity_cycle_hash.. #{@complexity_cycle_hash}"
@@ -103,6 +65,52 @@ class WelcomeController < ApplicationController
     puts "@complexity_effort_hash... #{@complexity_effort_hash}"
 
   end
+
+  # #customfield_10042 -> task started date
+  # def delivery_management_effectiveness
+  #   #work reqst committed
+  #   response = post_search('search','{"jql":"project=UT AND created>=2014-01-01 AND created<=2014-01-31 AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029 AND duedate IS NOT EMPTY"}},"expand":names')
+  #   # puts "parsed_response.. #{parsed_response}"
+  #   parsed_response=JSON.parse(response)
+
+  #   # puts "parsed_response... #{parsed_response['issues']}"
+    
+  #   total_work_requests_committed = []
+  #   @total_work_requests_delivered = []
+
+  #   total_work_requests_committed = parsed_response['issues']
+
+  #   total_work_requests_committed.each do |issue|
+  #     if issue['fields']['resolutiondate']
+  #       resol_date = Time.parse(issue['fields']['resolutiondate'])
+  #       due_date = Time.parse(issue['fields']['duedate'])
+
+  #       @total_work_requests_delivered << issue if (resol_date > due_date || resol_date <= due_date)
+  #     end
+  #   end
+  #   puts "total_work_requests_delivered............ #{@total_work_requests_delivered}"
+  #   @total_work_requests_delivered = @total_work_requests_delivered.flatten
+  #   all_complex_issues = get_all_complex_issues(@total_work_requests_delivered)
+
+  #   @complexity_cycle_hash = get_delivery_cycle_data(all_complex_issues)
+  #   puts "@complexity_cycle_hash.. #{@complexity_cycle_hash}"
+  #   @complexity_effort_hash = get_delivery_effort_data(all_complex_issues)
+  #   puts "@complexity_effort_hash... #{@complexity_effort_hash}"
+
+  # end
+ 
+  def get_delivered_requests(total_work_requests_committed)
+    total_work_requests_delivered = []
+    total_work_requests_committed.each do |issue|
+      if issue['fields']['resolutiondate']
+        resol_date = Time.parse(issue['fields']['resolutiondate'])
+        due_date = Time.parse(issue['fields']['duedate'])
+
+        total_work_requests_delivered << issue if (resol_date > due_date || resol_date <= due_date)
+      end
+    end
+    total_work_requests_delivered
+  end    
 
   #returns {'high'=>[min,max,avg]} in seconds. use a helper in view to convert to days/hrs
   def get_delivery_cycle_data(all_complex_issues)

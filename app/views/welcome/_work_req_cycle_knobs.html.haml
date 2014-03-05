@@ -1,28 +1,28 @@
 .col-md-12{:style => "text-align:center;"}
   .col-md-3
     %div{:style =>"text-align:center;"}
-      %input.work_req_assigned{:type => "text", :value => @work_req_assigned}
+      %input.work_req_assigned{:type => "text", :value => @work_req_assigned.count}
     %div{:style =>"text-align:center;"}
       No. of Work Requests Assigned
-      = @work_req_assigned
+      = @work_req_assigned.count
   .col-md-2
     %div{:style =>"text-align:center;"}
-      %input.work_req_commited{:type => "text", :value => @work_req_committed}
+      %input.work_req_commited{:type => "text", :value => @work_req_committed.count}
     %div{:style =>"text-align:center;"}
       No. of Work Requests Committed
   .col-md-2
     %div{:style =>"text-align:center;"}
-      %input.work_req_del_on_time{:type => "text", :value => @work_req_on_time}
+      %input.work_req_del_on_time{:type => "text", :value => @work_req_on_time.count}
     %div{:style =>"text-align:center;"}
       No. of Work Requests Delivered On-time
   .col-md-2
     %div{:style =>"text-align:center;"}
-      %input.work_req_del_delayed{:type => "text", :value => @work_req_delayed}
+      %input.work_req_del_delayed{:type => "text", :value => @work_req_delayed.count}
     %div{:style =>"text-align:center;"}
       No. of Work Requests Delivered With Delay
   .col-md-3
     %div{:style =>"text-align:center;"}
-      %input.work_req_delivered{:type => "text", :value => @total_work_req_delivered}
+      %input.work_req_delivered{:type => "text", :value => @total_work_req_delivered.count}
     %div{:style =>"text-align:center;"}
       Total Work Requests Delivered (Nos.)
 
@@ -30,34 +30,34 @@
 :javascript
   $(function() {
       $(".work_req_assigned").knob({
-        'max':#{@work_req_assigned},
+        'max':#{@work_req_assigned.count},
         'readOnly':true,
         'width': '60%',
         'skin':'torn'
       });
 
       $(".work_req_commited").knob({
-        'max':#{@work_req_assigned},
+        'max':#{@work_req_assigned.count},
         'readOnly':true,
         'width': '60%'
       });
 
       $(".work_req_del_on_time").knob({
-        'max':#{@work_req_assigned},
+        'max':#{@work_req_assigned.count},
         'readOnly':true,
         'fgColor':'#DFF0D7',
         'width': '60%'
       });
 
       $(".work_req_del_delayed").knob({
-        'max':#{@work_req_assigned},
+        'max':#{@work_req_assigned.count},
         'readOnly':true,
         'fgColor':'#f2dede',
         'width': '60%'
       });
 
        $(".work_req_delivered").knob({
-        'max':#{@work_req_assigned},
+        'max':#{@work_req_assigned.count},
         'readOnly':true,
         'fgColor':'#9fedad',
         'width': '60%'

@@ -1,4 +1,4 @@
-%table.table.table-bordered
+%table.table.table-bordered.table-condensed
   %tr
     %th Month
     %th Work Request Complexity
@@ -20,9 +20,9 @@
     %td
       = @complexity_requests_hash['High'].present? ? get_request_count('Delivery Defect', @complexity_requests_hash['High']) : 0
     %td{:rowspan => "3", :style => "text-align:center;font-size:24px;padding-top:35px;"}
-      = percent_of(@work_req_on_time, @work_req_committed)
+      = percent_of(@work_req_on_time.count, @work_req_committed.count)
     %td{:rowspan => "3", :style => "text-align:center;font-size:24px;padding-top:35px;"}
-      = @work_req_assigned - @total_work_req_delivered
+      = @work_req_assigned.count - @total_work_req_delivered.count
   %tr
     %td.warning Medium
     %td

@@ -1,21 +1,61 @@
-%table.table.table-bordered
-  %tr
-    %th Month
-    %th No. of Work Requests Assigned
-    %th No. of Work Requests Committed 
-    %th.success No. of Work Requests Delivered On-time
-    %th.danger No. of Work Requests Delivered With Delay
-    %th.info Total Work Requests Delivered (Nos.)
-  %tr
-    %td Jan 2014
-    %td
-      = @work_req_assigned
-    %td
-      = @work_req_committed
-    %td
-      = @work_req_on_time
-    %td
-      = @work_req_delayed
-    %td
-      = @total_work_req_delivered
-     
+.table-responsive  
+  %table.table.table-bordered.table-condensed
+    %tr
+      %th Month
+      %th No. of Work Requests Assigned
+      %th No. of Work Requests Committed 
+      %th.success No. of Work Requests Delivered On-time
+      %th.danger No. of Work Requests Delivered With Delay
+      %th.info Total Work Requests Delivered (Nos.)
+      %th Work Request Complexity
+      %th Work Request Delivered by Complexity (Nos.)
+      %th.success New Requirements
+      %th.warning Change Requests
+      %th.danger Delivered Defects
+      %th Work Requests Delivered On-time (%)
+      %th Work Request  Backlog 
+    %tr
+      %td{:rowspan => "3" } Jan 2014
+      %td{:rowspan => "3", :style => "text-align:center;font-size:24px;padding-top:35px;"}
+        = @work_req_assigned.count
+      %td{:rowspan => "3", :style => "text-align:center;font-size:24px;padding-top:35px;"}
+        = @work_req_committed.count
+      %td{:rowspan => "3", :style => "text-align:center;font-size:24px;padding-top:35px;"}
+        = @work_req_on_time.count
+      %td{:rowspan => "3", :style => "text-align:center;font-size:24px;padding-top:35px;"}
+        = @work_req_delayed.count
+      %td{:rowspan => "3", :style => "text-align:center;font-size:24px;padding-top:35px;"}
+        = @total_work_req_delivered.count
+      %td.danger High
+      %td 
+        = @complexity_counts['High']
+      %td
+        = @complexity_requests_hash['High'].present? ? get_request_count('New Requirement', @complexity_requests_hash['High']) : 0
+      %td
+        = @complexity_requests_hash['High'].present? ? get_request_count('Change Request', @complexity_requests_hash['High']) : 0
+      %td
+        = @complexity_requests_hash['High'].present? ? get_request_count('Delivery Defect', @complexity_requests_hash['High']) : 0
+      %td{:rowspan => "3", :style => "text-align:center;font-size:24px;padding-top:35px;"}
+        = percent_of(@work_req_on_time.count, @work_req_committed.count)
+      %td{:rowspan => "3", :style => "text-align:center;font-size:24px;padding-top:35px;"}
+        = @work_req_assigned.count - @total_work_req_delivered.count
+    %tr
+      %td.warning Medium
+      %td
+        = @complexity_counts['Medium']
+      %td
+        = @complexity_requests_hash['Medium'].present? ? get_request_count('New Requirement', @complexity_requests_hash['Medium']) : 0
+      %td
+        = @complexity_requests_hash['Medium'].present? ? get_request_count('Change Request', @complexity_requests_hash['Medium']) : 0
+      %td
+        = @complexity_requests_hash['Medium'].present? ? get_request_count('Delivery Defect', @complexity_requests_hash['Medium']) : 0 
+    %tr
+      %td.success Low
+      %td 
+        = @complexity_counts['Low']
+      %td
+        = @complexity_requests_hash['Low'].present? ? get_request_count('New Requirement', @complexity_requests_hash['Low']) : 0
+      %td
+        = @complexity_requests_hash['Low'].present? ? get_request_count('Change Request', @complexity_requests_hash['Low']) : 0
+      %td
+        = @complexity_requests_hash['Low'].present? ? get_request_count('Delivery Defect', @complexity_requests_hash['Low']) : 0 
