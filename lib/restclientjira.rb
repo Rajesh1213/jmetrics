@@ -1,6 +1,6 @@
 module RestClientJira
-  USERNAME = 'mukul.chourey'
-  PASSWORD = 'Passw0rd#'
+  USERNAME = ''
+  PASSWORD = ''
 
   #this is a old url  
   REQUEST_URL = "https://seneca-global.atlassian.net/rest/api/2"
