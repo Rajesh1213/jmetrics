@@ -1,5 +1,5 @@
 .table-responsive  
-  %table.table.table-bordered.table-condensed
+  %table.table.table-bordered.table-condensed#background-image
     %tr
       %th Month
       %th No. of Work Requests Assigned
@@ -26,7 +26,7 @@
         = @work_req_delayed.count
       %td{:rowspan => "3", :style => "text-align:center;font-size:24px;padding-top:35px;"}
         = @total_work_req_delivered.count
-      %td.danger High
+      %th.danger High
       %td 
         = @complexity_counts['High']
       %td
@@ -40,7 +40,7 @@
       %td{:rowspan => "3", :style => "text-align:center;font-size:24px;padding-top:35px;"}
         = @work_req_assigned.count - @total_work_req_delivered.count
     %tr
-      %td.warning Medium
+      %th.warning Medium
       %td
         = @complexity_counts['Medium']
       %td
@@ -50,7 +50,7 @@
       %td
         = @complexity_requests_hash['Medium'].present? ? get_request_count('Delivery Defect', @complexity_requests_hash['Medium']) : 0 
     %tr
-      %td.success Low
+      %th.success Low
       %td 
         = @complexity_counts['Low']
       %td

@@ -1,14 +1,14 @@
 / .well{:style => "margin-top: 10px;"}
 .col-md-12
   = render :partial => "shared/project_inputs"
-  %h3
+  .col-md-12{:style => "margin-bottom: 15px; font-weight:bold; font-size: 16px;"}
     .col-md-4
       = image_tag "http://blogs.atlassian.com/wp-content/uploads/Atlassian-ondemand-logo.png", :size => '25x25'
       Project Name Here
     .col-md-4
       Metrics of month: January 2014
     .col-md-4
-      Project Lead: Vara Prasad     
+      Project Lead: Vara Prasad        
   .col-md-12
     .panel.panel-default
       .panel-heading Metric: Work request Delivery Cycle Time; Work Request Delivery Effort
@@ -16,11 +16,11 @@
         / = render :partial => "work_req_cycle_knobs"
         = render :partial => "work_req_del_cycle_time"
         
-    .panel.panel-default
-      .panel-heading Metric: Work Request Complexity
-      .panel-body
-        .col-md-12{:style => "text-align:center;"}
-          = render :partial => "workrequest_complexity_tree"
+    / .panel.panel-default
+    /   .panel-heading Metric: Work Request Complexity
+    /   .panel-body
+    /     .col-md-12{:style => "text-align:center;"}
+    /       = render :partial => "workrequest_complexity_tree"
     .panel.panel-default
       .panel-heading Delivery Management Effectiveness
       .panel-body

@@ -1,4 +1,4 @@
-%table.table.table-bordered.table-condensed
+%table#background-image.table.table-bordered
   %tr
     %th Month
     %th Complexity
@@ -15,7 +15,7 @@
     %th Average
   %tr
     %td{:rowspan => "4"} Jan 2014
-    %td.danger High
+    %th.danger High
     / cycle time
     %td= @complexity_cycle_hash['High'].present? ? convert_to_days(@complexity_cycle_hash['High'][0]) : 0
     %td= @complexity_cycle_hash['High'].present? ? convert_to_days(@complexity_cycle_hash['High'][1]) : 0
@@ -25,7 +25,7 @@
     %td= @complexity_effort_hash['High'].present? ? convert_to_hours(@complexity_effort_hash['High'][1]) : 0
     %td= @complexity_effort_hash['High'].present? ? convert_to_hours(@complexity_effort_hash['High'][2]) : 0
   %tr
-    %td.warning Minimum
+    %th.warning Minimum
     %td= @complexity_cycle_hash['Medium'].present? ? convert_to_days(@complexity_cycle_hash['Medium'][0]) : 0
     %td= @complexity_cycle_hash['Medium'].present? ? convert_to_days(@complexity_cycle_hash['Medium'][1]) : 0
     %td= @complexity_cycle_hash['Medium'].present? ? convert_to_days(@complexity_cycle_hash['Medium'][2]) : 0
@@ -34,7 +34,7 @@
     %td= @complexity_effort_hash['Medium'].present? ? convert_to_days(@complexity_effort_hash['Medium'][1]) : 0
     %td= @complexity_effort_hash['Medium'].present? ? convert_to_days(@complexity_effort_hash['Medium'][2]) : 0
   %tr
-    %td.success Low
+    %th.success Low
     %td= @complexity_cycle_hash['Low'].present? ? convert_to_days(@complexity_cycle_hash['Low'][0]) : 0
     %td= @complexity_cycle_hash['Low'].present? ? convert_to_days(@complexity_cycle_hash['Low'][1]) : 0
     %td= @complexity_cycle_hash['Low'].present? ? convert_to_days(@complexity_cycle_hash['Low'][2]) : 0

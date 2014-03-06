@@ -1,16 +1,15 @@
-= form_tag("/", method: "get") do
-  
-  Project:
-  = select_tag "Project", options_for_select(get_projects_list), prompt: "Select Project"
+.col-md-12
+  .panel.panel-info
+    .panel-heading
+      = form_tag("/", method: "get", :class => "form-inline", :role => "form") do
+        .form-group
+          Project:
+          = select_tag "Project", options_for_select(get_projects_list), prompt: "Select Project", :class => "form-control"
+        .form-group
+          From Date:
+          = select_date(Time.now, {order: [:day, :month , :year], prefix: 'from_date'}, :class => "form-control")
+        .form-group
+          To Date:
+          = select_date(Time.now, {order: [:day, :month , :year], prefix: 'to_date'}, :class => "form-control")
 
-  %br
-  %br
-  From Date:
-  = select_date(Time.now, {order: [:day, :month , :year], prefix: 'from_date'})
-  
-  To Date:
-  = select_date(Time.now, {order: [:day, :month , :year], prefix: 'to_date'})
-  %br
-
-  = submit_tag("Get Data")
-
+        = submit_tag("Get Metrics", :class => "btn btn-info")
