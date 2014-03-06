@@ -56,49 +56,14 @@ class WelcomeController < ApplicationController
     @complexity_counts = Hash.new(0)
     complexity.each { |name| @complexity_counts[name] += 1 }
 
-    # delivery_management_effectiveness 
+    # delivery_management_effectiveness
     all_complex_issues = get_all_complex_issues(@total_work_req_delivered)
-
+    #development effectiveness
+    @development_effectiveness = get_development_effectiveness(@total_work_req_delivered, project)
     @complexity_cycle_hash = get_delivery_cycle_data(all_complex_issues)
-    puts "@complexity_cycle_hash.. #{@complexity_cycle_hash}"
     @complexity_effort_hash = get_delivery_effort_data(all_complex_issues)
-    puts "@complexity_effort_hash... #{@complexity_effort_hash}"
-
   end
 
-  # #customfield_10042 -> task started date
-  # def delivery_management_effectiveness
-  #   #work reqst committed
-  #   response = post_search('search','{"jql":"project=UT AND created>=2014-01-01 AND created<=2014-01-31 AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029 AND duedate IS NOT EMPTY"}},"expand":names')
-  #   # puts "parsed_response.. #{parsed_response}"
-  #   parsed_response=JSON.parse(response)
-
-  #   # puts "parsed_response... #{parsed_response['issues']}"
-    
-  #   total_work_requests_committed = []
-  #   @total_work_requests_delivered = []
-
-  #   total_work_requests_committed = parsed_response['issues']
-
-  #   total_work_requests_committed.each do |issue|
-  #     if issue['fields']['resolutiondate']
-  #       resol_date = Time.parse(issue['fields']['resolutiondate'])
-  #       due_date = Time.parse(issue['fields']['duedate'])
-
-  #       @total_work_requests_delivered << issue if (resol_date > due_date || resol_date <= due_date)
-  #     end
-  #   end
-  #   puts "total_work_requests_delivered............ #{@total_work_requests_delivered}"
-  #   @total_work_requests_delivered = @total_work_requests_delivered.flatten
-  #   all_complex_issues = get_all_complex_issues(@total_work_requests_delivered)
-
-  #   @complexity_cycle_hash = get_delivery_cycle_data(all_complex_issues)
-  #   puts "@complexity_cycle_hash.. #{@complexity_cycle_hash}"
-  #   @complexity_effort_hash = get_delivery_effort_data(all_complex_issues)
-  #   puts "@complexity_effort_hash... #{@complexity_effort_hash}"
-
-  # end
- 
   def get_delivered_requests(total_work_requests_committed)
     total_work_requests_delivered = []
     total_work_requests_committed.each do |issue|
@@ -125,9 +90,7 @@ class WelcomeController < ApplicationController
 
   def get_delivery_effort_data(all_complex_issues)
     complexity_effort_hash = {}
-
     all_complex_issues.each_pair do |key,value|
-      # get_cycle_time(key,value)
       effort_time = all_complex_issues[key].map{|ele| ele['fields']['timespent']}
       complexity_effort_hash[key] = [effort_time.min,effort_time.max,effort_time.sum/effort_time.count]
     end
@@ -151,10 +114,22 @@ class WelcomeController < ApplicationController
     all_complex_issues
   end
 
+  def get_development_effectiveness(total_work_requests_delivered, project)
+    issue_parent_ids = []
+    total_work_requests_delivered.map{|issue| issue_parent_ids << issue['key'] }
+    parent_ids = issue_parent_ids.map { |i| "'" + i.to_s + "'" }.join(",")
+    testing_sub_tasks =  get_testing_tasks(parent_ids, project)
+    puts "testing subtasks = #{testing_sub_tasks.inspect}"
+  end
+
   def get_sub_tasks(from_date, to_date, parent_key, project)
     sub_tasks = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND duedate IS NOT EMPTY AND parent = '"#{parent_key}"'","fields":["id","key","duedate","resolutiondate","issuetype","customfield_10024","timespent"]}}')
     sub_tasks = JSON.parse(sub_tasks)
     sub_tasks['issues']
+  end
+
+  def get_testing_tasks(issue_parent_ids,project)
+    testing_tasks = post_search('search', '{"jql":"project='"#{project}"' AND type = Testing\\\u0020Task AND parent in \\u0028'"#{issue_parent_ids}"'\\u0029 "}')
   end
 
 end

@@ -1,13 +1,11 @@
-/ .well{:style => "margin-top: 10px;"}
 .col-md-12
-  = render :partial => "shared/project_inputs"
-  .col-md-12{:style => "margin-bottom: 15px; font-weight:bold; font-size: 16px;"}
+  .col-md-12{:style => "margin:15px 0px 15px 0px; font-weight:bold; font-size: 16px; color:#555;"}
     .col-md-4
       = image_tag "http://blogs.atlassian.com/wp-content/uploads/Atlassian-ondemand-logo.png", :size => '25x25'
       Project Name Here
-    .col-md-4
+    .col-md-4{:style => 'text-align:center;'}
       Metrics of month: January 2014
-    .col-md-4
+    .col-md-4{:style => 'text-align:right;'}
       Project Lead: Vara Prasad        
   .col-md-12
     .panel.panel-default

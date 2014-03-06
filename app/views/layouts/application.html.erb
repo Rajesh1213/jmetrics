@@ -16,11 +16,12 @@
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>
 	      </a>
-	      <a class="navbar-brand" href="#"> <%= image_tag "logo.png", :size => '200x33' %> </a>
-	      <p class="navbar-text navbar-right">
-	        Project Name Here
-    		<%= image_tag "http://blogs.atlassian.com/wp-content/uploads/Atlassian-ondemand-logo.png", :size => '50x50' %>
-	      </p>
+	      <div class ="col-md-2">
+	        <a class="navbar-brand" href="#"> <%= image_tag "logo.png", :size => '200x33' %> </a>
+	      </div>
+	      <div class ="col-md-9 pull-right">
+	      <%= render :partial => "shared/project_inputs"%>
+	      </div>
 	    </div>
 	  </div>
 	</div>
@@ -38,7 +39,7 @@
 	<!-- </div> -->
 
 	 <footer class="white navbar-fixed-bottom">
-	    Project Metrics @copyrights
+	    Project Metrics @copyrights Powered by SenecaGlobal
 	    <% if user_signed_in? %>
 	      <%= link_to "Logout", destroy_user_session_path, :method => :delete %>
 	    <% end %>  

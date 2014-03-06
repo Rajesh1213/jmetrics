@@ -1,15 +1,14 @@
-.col-md-12
+.div{:style => "text-align:right;"}
   .panel.panel-info
     .panel-heading
       = form_tag("/", method: "get", :class => "form-inline", :role => "form") do
         .form-group
           Project:
-          = select_tag "Project", options_for_select(get_projects_list), prompt: "Select Project", :class => "form-control"
+          = select_tag "Project", options_for_select(get_projects_list), prompt: "Select Project", :class => "form-control input-sm"
         .form-group
-          From Date:
-          = select_date(Time.now, {order: [:day, :month , :year], prefix: 'from_date'}, :class => "form-control")
+          From:
+          = select_date(Time.now, {order: [:day, :month , :year], prefix: 'from_date'}, :class => "form-control input-sm")
         .form-group
-          To Date:
-          = select_date(Time.now, {order: [:day, :month , :year], prefix: 'to_date'}, :class => "form-control")
-
-        = submit_tag("Get Metrics", :class => "btn btn-info")
+          To:
+          = select_date(Time.now, {order: [:day, :month , :year], prefix: 'to_date'}, :class => "form-control input-sm")
+        = submit_tag("Get Metrics", :class => "btn btn-info btn-sm")
