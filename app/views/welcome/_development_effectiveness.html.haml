@@ -11,11 +11,11 @@
     %th Test Coverage (%)
   %tr
     %td Jan 2014
-    %td 72
-    %td 72
-    %td 72
-    %td 72
-    %td 72
-    %td 72
-    %td 72
-    %td 72  
+    %td=$development_effectiveness['Test Design Planned']
+    %td=$development_effectiveness['Test Design Developed']
+    %td 0
+    %td 0
+    %td=$development_effectiveness['Test Cases Planned for Execution']
+    %td=$development_effectiveness['Test Cases Actually Executed']
+    %td=percent_of($development_effectiveness['Test Cases Actually Executed'],$development_effectiveness['Test Cases Planned for Execution'])
+    %td=$development_effectiveness['Test Coverage (%)']

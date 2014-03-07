@@ -19,5 +19,5 @@ module ApplicationHelper
   def convert_to_hours(seconds)
     "#{(seconds/60/60/8).round(2)}"
   end
-
+  
 end
