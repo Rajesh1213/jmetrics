@@ -61,9 +61,54 @@ class WelcomeController < ApplicationController
     # delivery_management_effectiveness
     all_complex_issues = get_all_complex_issues(@total_work_req_delivered)
     #development effectiveness
-    @development_effectiveness = get_development_effectiveness(@total_work_req_delivered, project)
+    @development_effectiveness = @total_work_req_delivered.present? ? get_development_effectiveness(@total_work_req_delivered, project) : 0
     @complexity_cycle_hash = get_delivery_cycle_data(all_complex_issues)
     @complexity_effort_hash = get_delivery_effort_data(all_complex_issues)
+
+    #development effectiveness
+    get_development_effectiveness_defects(project, from_date, to_date)
+
+  end
+
+  def get_development_effectiveness_defects(project, from_date, to_date)
+    response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Review\\\u0020Defect\\u002CDelivered\\\u0020Defect\\u002CTesting\\\u0020Defect\\u0029 AND duedate IS NOT EMPTY"}}')
+    parsed_response=JSON.parse(response)
+    total_work_req_delivered = []
+    complexity = []
+    @complexity_defects_hash = Hash.new
+    
+    parsed_response['issues'].each do |issue|
+      if issue['fields']['resolutiondate']
+        resol_date = Time.parse(issue['fields']['resolutiondate'])
+        due_date = Time.parse(issue['fields']['duedate'])
+        issuetype = issue['fields']['issuetype']['name']
+
+        issue_complexity = issue['fields']['customfield_10024'].present? ? issue['fields']['customfield_10024']['value'] : 'Low'
+        complexity << issue_complexity
+
+        @complexity_defects_hash[issue_complexity] = @complexity_defects_hash[issue_complexity].blank? ?
+                                                                                   [issuetype] :
+                                                                                   @complexity_defects_hash[issue_complexity] + [issuetype]
+
+        if resol_date > due_date || resol_date <= due_date
+          total_work_req_delivered << issue
+        end
+      end
+    end
+    
+    defects = total_work_req_delivered.map{|ele| ele['fields']['issuetype']['name']}
+    @defect_counts = Hash.new(0)
+    defects.each { |name| @defect_counts[name] += 1 }
+    puts "@defect_counts... #{@defect_counts}"
+
+    review_defects = total_work_req_delivered.select do |ele|
+      ele['fields']['issuetype']['name'] == "Review Defect"
+    end
+    #@total_review_effort in seconds
+    @total_review_effort = review_defects.map{|ele| ele['fields']['timespent']}.sum
+
+    #Defect Data Distribution table: eg:{"Low"=>["Delivered Defect", "Testing Defect", "Delivered Defect", "Review Defect"]}
+    puts "@complexity_defects_hash,.. #{@complexity_defects_hash}"
   end
 
   def get_delivered_requests(total_work_requests_committed)
