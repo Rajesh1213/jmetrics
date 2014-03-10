@@ -20,4 +20,8 @@ module ApplicationHelper
     "#{(seconds/60/60/8).round(2)}"
   end
   
+  def get_inprocess_defects(defect_counts)
+    defect_counts['Review Defect'] + defect_counts['Testing Defect']
+  end
+
 end

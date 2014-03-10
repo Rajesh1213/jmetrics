@@ -1,0 +1,23 @@
+%table.table.table-bordered.table-condensed#background-image
+  %tr
+    %th Month
+    %th Total Review Defects
+    %th Total Review Effort (Hrs)
+    %th Total Testing Defects
+    %th In-process Defects
+    %th Delivered Defects
+    %th Review Efficiency (Defects/hrs)
+    %th Review Effectiveness (%)
+    %th Testing Effectiveness (%)
+    %th Defect Removal Efficiency (%)
+    %th Cummulative Defect Removal Efficiency (%)
+  %tr
+    %td Jan 2014
+    %td= @defect_counts['Review Defect']
+    %td= @total_review_effort
+    %td= @defect_counts['Testing Defect']
+    %td= get_inprocess_defects(@defect_counts)
+    %td= @defect_counts['Delivered Defect']
+    %td=0 
+    %td=0
+    %td=0

@@ -31,6 +31,7 @@ class WelcomeController < ApplicationController
     @work_req_not_delivered = []
     complexity = []
     @complexity_requests_hash = Hash.new
+    @total_review_effort = 0
 
     @total_work_requests_committed.each do |issue|
       if issue['fields']['resolutiondate']
@@ -44,6 +45,8 @@ class WelcomeController < ApplicationController
                                                                                    [issuetype] : 
                                                                                    @complexity_requests_hash[issue_complexity] + [issuetype]
         
+        @total_review_effort += get_total_review_effort(issue)
+
         if resol_date > due_date
           @work_req_delayed << issue
         elsif resol_date <= due_date
@@ -53,7 +56,7 @@ class WelcomeController < ApplicationController
         @work_req_not_delivered << issue
       end
     end
-
+    puts "@tot...#{@total_review_effort}"
     @total_work_req_delivered = @work_req_on_time + @work_req_delayed
     @complexity_counts = Hash.new(0)
     complexity.each { |name| @complexity_counts[name] += 1 }
@@ -104,11 +107,17 @@ class WelcomeController < ApplicationController
     review_defects = total_work_req_delivered.select do |ele|
       ele['fields']['issuetype']['name'] == "Review Defect"
     end
+    
     #@total_review_effort in seconds
-    @total_review_effort = review_defects.map{|ele| ele['fields']['timespent']}.sum
+    # @total_review_effort = review_defects.map{|ele| ele['fields']['timespent']}.sum
 
     #Defect Data Distribution table: eg:{"Low"=>["Delivered Defect", "Testing Defect", "Delivered Defect", "Review Defect"]}
     puts "@complexity_defects_hash,.. #{@complexity_defects_hash}"
+  end
+
+  #returns sum of analysis review, design review, code review, testing review for qa, testing review for unittesting reviews
+  def get_total_review_effort(issue)
+    issue['fields']['customfield_10029'].to_f + issue['fields']['customfield_10034'].to_f + issue['fields']['customfield_10038'].to_f + issue['fields']['customfield_10105'].to_f + issue['fields']['customfield_10106'].to_f
   end
 
   def get_delivered_requests(total_work_requests_committed)
