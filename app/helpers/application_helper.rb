@@ -24,4 +24,20 @@ module ApplicationHelper
     defect_counts['Review Defect'] + defect_counts['Testing Defect']
   end
 
+  def get_review_efficiency(review_defects, review_effort)
+     review_effort.zero? ? 0 : (review_defects/review_effort).round(2)
+  end
+
+  def get_review_effectiveness(review_defects, inprocess_defects)
+    inprocess_defects.zero? ? 0 : "#{(review_defects/inprocess_defects)*100} %"
+  end
+
+  def get_testing_effectiveness(testing_defects, inprocess_defects)
+    inprocess_defects.zero? ? 0 : "#{(testing_defects/inprocess_defects)*100} %"
+  end
+
+  def get_defect_removal_efficiency(inprocess_defects, delivered_defects)
+    (inprocess_defects.zero? && delivered_defects.zero?) ? 0 : "#{(inprocess_defects/(delivered_defects+inprocess_defects))*100} %"
+  end
+
 end
