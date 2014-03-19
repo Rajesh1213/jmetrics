@@ -10,16 +10,15 @@
     %th Review Effectiveness (%)
     %th Testing Effectiveness (%)
     %th Defect Removal Efficiency (%)
-    %th Cummulative Defect Removal Efficiency (%)
   %tr
     %td Jan 2014
     %td= @defect_counts['Review Defect']
     %td= @total_review_effort
     %td= @defect_counts['Testing Defect']
-    %td= get_inprocess_defects(@defect_counts)
+    - inprocess_defects = get_inprocess_defects(@defect_counts)
+    %td= inprocess_defects
     %td= @defect_counts['Delivered Defect']
-    %td= @defect_counts['Review Defect'].to_i / @total_review_effort.to_i
-    %td= percent_of(@defect_counts['Review Defect'], get_inprocess_defects(@defect_counts))
-    %td= percent_of(@defect_counts['Testing Defect'], get_inprocess_defects(@defect_counts))
-    %td= get_defect_removal_efficiency(get_inprocess_defects(@defect_counts), get_inprocess_defects(@defect_counts), @defect_counts['Delivered Defect'])
-    %td= get_defect_removal_efficiency(get_inprocess_defects(@defect_counts), get_inprocess_defects(@defect_counts), @defect_counts['Delivered Defect'])
+    %td= get_review_efficiency(@defect_counts['Review Defect'],@total_review_effort )
+    %td= get_review_effectiveness(@defect_counts['Review Defect'], inprocess_defects)
+    %td= get_testing_effectiveness(@defect_counts['Testing Defect'], inprocess_defects)
+    %td= get_defect_removal_efficiency(inprocess_defects, @defect_counts['Delivered Defect'])

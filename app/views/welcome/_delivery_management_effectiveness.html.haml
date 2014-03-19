@@ -16,11 +16,11 @@
   %tr
     %td{:rowspan => "4"} Jan 2014
     %th.danger High
-    / cycle time
+    / cycle time in days
     %td= @complexity_cycle_hash['High'].present? ? convert_to_days(@complexity_cycle_hash['High'][0]) : 0
     %td= @complexity_cycle_hash['High'].present? ? convert_to_days(@complexity_cycle_hash['High'][1]) : 0
     %td= @complexity_cycle_hash['High'].present? ? convert_to_days(@complexity_cycle_hash['High'][2]) : 0
-    / effort
+    / effort in hours
     %td= @complexity_effort_hash['High'].present? ? convert_to_hours(@complexity_effort_hash['High'][0]) : 0
     %td= @complexity_effort_hash['High'].present? ? convert_to_hours(@complexity_effort_hash['High'][1]) : 0
     %td= @complexity_effort_hash['High'].present? ? convert_to_hours(@complexity_effort_hash['High'][2]) : 0

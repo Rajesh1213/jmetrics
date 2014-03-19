@@ -54,7 +54,6 @@ class WelcomeController < ApplicationController
         @work_req_not_delivered << issue
       end
     end
-    puts "@tot...#{@total_review_effort}"
     @total_work_req_delivered = @work_req_on_time + @work_req_delayed
     @complexity_counts = Hash.new(0)
     complexity.each { |name| @complexity_counts[name] += 1 }
@@ -100,7 +99,6 @@ class WelcomeController < ApplicationController
     defects = total_work_req_delivered.map{|ele| ele['fields']['issuetype']['name']}
     @defect_counts = Hash.new(0)
     defects.each { |name| @defect_counts[name] += 1 }
-    puts "@defect_counts... #{@defect_counts}"
 
     review_defects = total_work_req_delivered.select do |ele|
       ele['fields']['issuetype']['name'] == "Review Defect"
@@ -110,7 +108,6 @@ class WelcomeController < ApplicationController
     # @total_review_effort = review_defects.map{|ele| ele['fields']['timespent']}.sum
 
     #Defect Data Distribution table: eg:{"Low"=>["Delivered Defect", "Testing Defect", "Delivered Defect", "Review Defect"]}
-    puts "@complexity_defects_hash,.. #{@complexity_defects_hash}"
   end
 
   #returns sum of analysis review, design review, code review, testing review for qa, testing review for unittesting reviews
@@ -136,7 +133,7 @@ class WelcomeController < ApplicationController
     complexity_cycle_hash = {}
 
     all_complex_issues.each_pair do |key,value|
-      cycle_time = all_complex_issues[key].map{|ele| get_cycle_time(ele['fields']['resolutiondate'], ele['fields']['customfield_10042']) }
+      cycle_time = all_complex_issues[key].map{|ele| get_cycle_time(ele['fields']['resolutiondate'], ele['fields']['customfield_10042'], ele['fields']['customfield_10206']) }
       complexity_cycle_hash[key] = [cycle_time.min,cycle_time.max,cycle_time.sum/cycle_time.count]
     end
     return complexity_cycle_hash
@@ -151,8 +148,9 @@ class WelcomeController < ApplicationController
     return complexity_effort_hash
   end
 
-  def get_cycle_time(resolution_date, start_date)
-    Time.parse(resolution_date) - Time.parse(start_date)
+  def get_cycle_time(resolution_date, start_date, hold_time)
+    hold_time_in_seconds =  hold_time.nil? ? 0 : hold_time*24*60*60
+    Time.parse(resolution_date) - Time.parse(start_date) - hold_time_in_seconds
   end
 
   #returns hash
