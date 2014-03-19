@@ -2,11 +2,11 @@
   .col-md-12{:style => "margin:15px 0px 15px 0px; font-weight:bold; font-size: 16px; color:#555;"}
     .col-md-4
       = image_tag "http://blogs.atlassian.com/wp-content/uploads/Atlassian-ondemand-logo.png", :size => '25x25'
-      Project Name Here
+      = @project
     .col-md-4{:style => 'text-align:center;'}
       Metrics of month: January 2014
     .col-md-4{:style => 'text-align:right;'}
-      Project Lead: Vara Prasad        
+      Project Lead:       
   .col-md-12
     .panel.panel-default
       .panel-heading Metric: Work request Delivery Cycle Time; Work Request Delivery Effort
@@ -30,7 +30,11 @@
     .panel.panel-default
       .panel-heading Development Review Effectiveness
       .panel-body
-        = render :partial => "development_review_effectiveness"    
+        = render :partial => "development_review_effectiveness"
+    .panel.panel-default
+      .panel-heading Development Review Effectiveness
+      .panel-body
+        = render :partial => "defect_data_distribution"    
       %br  
       %div
         .progress

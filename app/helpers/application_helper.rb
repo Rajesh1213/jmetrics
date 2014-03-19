@@ -24,4 +24,8 @@ module ApplicationHelper
     defect_counts['Review Defect'] + defect_counts['Testing Defect']
   end
 
+  def get_defect_removal_efficiency(val1,val2,val3)
+    "#{((val1*100)/(val2+val3))} %"
+  end
+
 end

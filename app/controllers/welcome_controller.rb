@@ -1,13 +1,11 @@
 class WelcomeController < ApplicationController
   # before_filter :authenticate_user!
-  $development_effectiveness = {"Test Design Planned" => 0,"Test Design Developed" => 0,"Defects in Test Design" => 0,
-                                "Test Cases Planned for Execution" => 0,"Test Cases Actually Executed" => 0,"Test Execution (%)" => 0,
-                                "Test Coverage (%)" => 0}
   def index
     if params[:from_date].present? && params[:to_date].present? &&  params[:Project]
       from_date = get_date(params[:from_date])
       to_date = get_date(params[:to_date])
       project = params[:Project]
+      @project = params[:Project]
     else
       from_date = Time.now.strftime("%Y-%m-%d")
       to_date = Time.now.strftime("%Y-%m-%d")
@@ -177,6 +175,12 @@ class WelcomeController < ApplicationController
     testing_sub_tasks =  get_testing_tasks(parent_ids, project)
     testing_sub_tasks = JSON.parse(testing_sub_tasks)
     build_development_effectiveness_hash(testing_sub_tasks)
+
+    testing_defects = get_testing_defects(parent_ids,project)
+    testing_defects = JSON.parse(testing_defects)
+    # puts "parent_ids =======================> #{parent_ids.inspect}"
+    puts "testing_defects ========================> #{testing_defects.length.inspect}"
+    build_testing_defect_hash(testing_defects)
   end
 
   def get_sub_tasks(from_date, to_date, parent_key, project)
@@ -188,6 +192,12 @@ class WelcomeController < ApplicationController
   def get_testing_tasks(issue_parent_ids,project)
     if issue_parent_ids.length > 0 
       testing_tasks = post_search('search', '{"jql":"project='"#{project}"' AND type = Testing\\\u0020Task AND parent in \\u0028'"#{issue_parent_ids}"'\\u0029"}')
+    end
+  end
+
+  def get_testing_defects(issue_parent_ids,project)
+    if issue_parent_ids.length > 0 
+      testing_tasks = post_search('search', '{"jql":"project='"#{project}"' AND type = Testing\\\u0020Defect AND parent in \\u0028'"#{issue_parent_ids}"'\\u0029"}')
     end
   end
 
@@ -207,6 +217,10 @@ class WelcomeController < ApplicationController
     tae = 0
     testing_tasks['issues'].map{|issue| tae += issue['fields']['customfield_10107'].to_i }
     $development_effectiveness['Test Cases Actually Executed'] = tae
+  end
+
+  def build_testing_defect_hash(testing_defects)
+
   end
 
 end
