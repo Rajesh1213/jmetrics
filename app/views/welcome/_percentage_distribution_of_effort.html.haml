@@ -1,0 +1,77 @@
+%table#background-image.table.table-bordered
+  %tr
+    %th Phase
+    %th Activity
+    %th Efforts (Hrs)
+    %th Phase Total (Hrs)
+    %th Phase (%)
+  %tr
+    %td Analysis
+    %td Requirement & Impact Analysis
+    %td 1
+    %td 2
+    %td 3
+  / Design Row Start  
+  %tr
+    %td{:rowspan => 2} Design
+    %td Solution Design
+    %td 10
+    %td{:rowspan => 2} 4
+    %td{:rowspan => 2} 5
+  %tr
+    %td Test Case Design (QA/Unit Test)
+    %td 11
+  / Design Row end
+  / Review Row Starts
+  %tr
+    %td{:rowspan => 4} Review
+    %td Requirement/Impact Analysis Review
+    %td 12
+    %td{:rowspan => 4} 6
+    %td{:rowspan => 4} 7
+  %tr
+    %td Solution Design Review
+    %td 13
+  %tr
+    %td Test Case Review
+    %td 14
+  %tr
+    %td Code Review
+    %td 15
+  / Review Row Ends  
+  / Development row Starts
+  %tr
+    %td Development
+    %td Coding/Self Unit Testing
+    %td 16
+    %td 17
+    %td 18
+  / Development row Ends
+  / Testing Row Starts
+  %tr
+    %td{:rowspan => 2} Testing
+    %td Peer Functional Testing
+    %td 19
+    %td{:rowspan => 2} 20
+    %td{:rowspan => 2} 21
+  %tr
+    %td Pre-Release/QA Testing
+    %td 22
+  / Testing Row Ends
+  / Defect Fix Row Starts
+  %tr
+    %td Defect Fix
+    %td 23
+    %td 24
+    %td 25
+    %td 26
+  / Defect Fix Row Ends
+  / Total Row Starts
+  %tr
+    %td Total
+    %td 27
+    %td 28
+    %td 29
+    %td 30
+  / Total Row Ends  
+

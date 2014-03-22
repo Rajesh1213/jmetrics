@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
-  # before_filter :authenticate_user!
+  before_filter :build_hash
   def index
     if params[:from_date].present? && params[:to_date].present? &&  params[:Project]
       from_date = get_date(params[:from_date])
@@ -11,40 +11,44 @@ class WelcomeController < ApplicationController
       to_date = Time.now.strftime("%Y-%m-%d")
       project = 'UT'
     end
-    
     #total_work_req_assigned
     response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029","fields":["id","key"]}}')
     parsed_response=JSON.parse(response)
     @work_req_assigned = parsed_response['issues']
-
     #work reqst committed
     response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029 AND duedate IS NOT EMPTY"}}')
     parsed_response = JSON.parse(response)
     total = parsed_response['total']
     @total_work_requests_committed = parsed_response['issues']
     @work_req_committed = @total_work_requests_committed
+    # work_request_delivery_cycle_time
+    work_request_delivery_cycle_time(@total_work_requests_committed)
+    # delivery_management_effectiveness
+    all_complex_issues = get_all_complex_issues(@total_work_req_delivered)
+    #development effectiveness
+    @development_effectiveness = @total_work_req_delivered.present? ? get_development_effectiveness(@total_work_req_delivered, project) : 0
+    @complexity_cycle_hash = get_delivery_cycle_data(all_complex_issues)
+    @complexity_effort_hash = get_delivery_effort_data(all_complex_issues)
+    #development effectiveness
+    get_development_effectiveness_defects(project, from_date, to_date)
+  end
 
+  def work_request_delivery_cycle_time(total_work_requests_committed)
     @work_req_delayed = []
     @work_req_on_time = []
     @work_req_not_delivered = []
     complexity = []
     @complexity_requests_hash = Hash.new
     @total_review_effort = 0
-
-    @total_work_requests_committed.each do |issue|
+    total_work_requests_committed.each do |issue|
       if issue['fields']['resolutiondate']
         resol_date = Time.parse(issue['fields']['resolutiondate'])
         due_date = Time.parse(issue['fields']['duedate'])
         issuetype = issue['fields']['issuetype']['name']
         issue_complexity = issue['fields']['customfield_10024'].present? ? issue['fields']['customfield_10024']['value'] : 'Low'
-
         complexity << issue_complexity
-        @complexity_requests_hash[issue_complexity] = @complexity_requests_hash[issue_complexity].blank? ? 
-                                                                                   [issuetype] : 
-                                                                                   @complexity_requests_hash[issue_complexity] + [issuetype]
-        
+        @complexity_requests_hash[issue_complexity] = @complexity_requests_hash[issue_complexity].blank? ? [issuetype] : @complexity_requests_hash[issue_complexity] + [issuetype]
         @total_review_effort += get_total_review_effort(issue)
-
         if resol_date > due_date
           @work_req_delayed << issue
         elsif resol_date <= due_date
@@ -57,17 +61,6 @@ class WelcomeController < ApplicationController
     @total_work_req_delivered = @work_req_on_time + @work_req_delayed
     @complexity_counts = Hash.new(0)
     complexity.each { |name| @complexity_counts[name] += 1 }
-
-    # delivery_management_effectiveness
-    all_complex_issues = get_all_complex_issues(@total_work_req_delivered)
-    #development effectiveness
-    @development_effectiveness = @total_work_req_delivered.present? ? get_development_effectiveness(@total_work_req_delivered, project) : 0
-    @complexity_cycle_hash = get_delivery_cycle_data(all_complex_issues)
-    @complexity_effort_hash = get_delivery_effort_data(all_complex_issues)
-
-    #development effectiveness
-    get_development_effectiveness_defects(project, from_date, to_date)
-
   end
 
   def get_development_effectiveness_defects(project, from_date, to_date)
@@ -76,33 +69,32 @@ class WelcomeController < ApplicationController
     total_work_req_delivered = []
     complexity = []
     @complexity_defects_hash = Hash.new
-    
     parsed_response['issues'].each do |issue|
       if issue['fields']['resolutiondate']
         resol_date = Time.parse(issue['fields']['resolutiondate'])
         due_date = Time.parse(issue['fields']['duedate'])
         issuetype = issue['fields']['issuetype']['name']
-
-        issue_complexity = issue['fields']['customfield_10024'].present? ? issue['fields']['customfield_10024']['value'] : 'Low'
+        issue_complexity = issue['fields']['customfield_10025'].present? ? issue['fields']['customfield_10025']['value'] : 'Low'
         complexity << issue_complexity
-
-        @complexity_defects_hash[issue_complexity] = @complexity_defects_hash[issue_complexity].blank? ?
-                                                                                   [issuetype] :
-                                                                                   @complexity_defects_hash[issue_complexity] + [issuetype]
-
+        @complexity_defects_hash[issue_complexity] = @complexity_defects_hash[issue_complexity].blank? ? [issuetype] : @complexity_defects_hash[issue_complexity] + [issuetype]
         if resol_date > due_date || resol_date <= due_date
           total_work_req_delivered << issue
         end
       end
     end
-    
     defects = total_work_req_delivered.map{|ele| ele['fields']['issuetype']['name']}
     @defect_counts = Hash.new(0)
     defects.each { |name| @defect_counts[name] += 1 }
-
-    review_defects = total_work_req_delivered.select do |ele|
+    @review_defects = total_work_req_delivered.select do |ele|
       ele['fields']['issuetype']['name'] == "Review Defect"
     end
+    @delivered_defects = total_work_req_delivered.select do |ele|
+      ele['fields']['issuetype']['name'] == "Delivered Defect"
+    end
+    @testing_defects = total_work_req_delivered.select do |ele|
+      ele['fields']['issuetype']['name'] == "Testing Defect"
+    end
+    @inprocess_defects = @review_defects + @testing_defects
     
     #@total_review_effort in seconds
     # @total_review_effort = review_defects.map{|ele| ele['fields']['timespent']}.sum
@@ -158,9 +150,7 @@ class WelcomeController < ApplicationController
     all_complex_issues = {}
     total_work_requests_delivered.each do |issue|
       if issue['fields']['customfield_10024'].present?
-        all_complex_issues[issue['fields']['customfield_10024']['value']] = all_complex_issues[issue['fields']['customfield_10024']['value']].blank? ?
-                                                                                   [issue] :
-                                                                                   all_complex_issues[issue['fields']['customfield_10024']['value']] + [issue]
+        all_complex_issues[issue['fields']['customfield_10024']['value']] = all_complex_issues[issue['fields']['customfield_10024']['value']].blank? ? [issue] : all_complex_issues[issue['fields']['customfield_10024']['value']] + [issue]
       end
     end
     all_complex_issues
@@ -176,8 +166,6 @@ class WelcomeController < ApplicationController
 
     testing_defects = get_testing_defects(parent_ids,project)
     testing_defects = JSON.parse(testing_defects)
-    # puts "parent_ids =======================> #{parent_ids.inspect}"
-    puts "testing_defects ========================> #{testing_defects.length.inspect}"
     build_testing_defect_hash(testing_defects)
   end
 
@@ -218,7 +206,12 @@ class WelcomeController < ApplicationController
   end
 
   def build_testing_defect_hash(testing_defects)
-
+   puts "testing_defects =======> #{testing_defects.length.inspect}"
   end
-
+  
+  def build_hash
+    $development_effectiveness = {"Test Design Planned" => 0,"Test Design Developed" => 0,"Defects in Test Design" => 0,
+                                "Test Cases Planned for Execution" => 0,"Test Cases Actually Executed" => 0,"Test Execution (%)" => 0,
+                                "Test Coverage (%)" => 0}
+  end                                
 end

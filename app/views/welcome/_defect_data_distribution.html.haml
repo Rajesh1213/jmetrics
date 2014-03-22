@@ -2,10 +2,44 @@
   %tr
     %th{:colspan => 20} Defect Data Distribution
   %tr
-    %th{:colspan => 2} Month
-    %th{:rowspan => 4} Total Review Defects
-    %th{:rowspan => 4} Total Testing Defects
-    %th{:rowspan => 4} Inprocess Defects
-    %th{:rowspan => 4} Delivered Defects
-
-
+    %th{:rowspan => 1} Month
+    %th{:colspan => 4} Total Review Defects
+    %th{:colspan => 4} Total Testing Defects
+    %th{:colspan => 4} Inprocess Defects
+    %th{:colspan => 4} Delivered Defects
+  %tr
+    %th
+    %th.danger H
+    %th.warning M
+    %th.success L
+    %th Total
+    %th.danger H
+    %th.warning M
+    %th.success L
+    %th Total
+    %th.danger H
+    %th.warning M
+    %th.success L
+    %th Total
+    %th.danger H
+    %th.warning M
+    %th.success L
+    %th Total
+  %tr
+    %td Jan 2014
+    %td=get_complexity_count(@review_defects, "High")
+    %td=get_complexity_count(@review_defects, "Medium")
+    %td=get_complexity_count(@review_defects, "Low")
+    %td=@review_defects.count
+    %td=get_complexity_count(@testing_defects, "High")
+    %td=get_complexity_count(@testing_defects, "Medium")
+    %td=get_complexity_count(@testing_defects, "Low")
+    %td=@testing_defects.count
+    %td=get_complexity_count(@inprocess_defects, "High")
+    %td=get_complexity_count(@inprocess_defects, "Medium")
+    %td=get_complexity_count(@inprocess_defects, "Low")
+    %td=@inprocess_defects.count
+    %td=get_complexity_count(@delivered_defects, "High")
+    %td=get_complexity_count(@delivered_defects, "Medium")
+    %td=get_complexity_count(@delivered_defects, "Low")
+    %td=@delivered_defects.count   

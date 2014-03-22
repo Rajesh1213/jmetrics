@@ -40,4 +40,10 @@ module ApplicationHelper
     (inprocess_defects.zero? && delivered_defects.zero?) ? 0 : "#{(inprocess_defects/(delivered_defects+inprocess_defects))*100} %"
   end
 
+  def get_complexity_count(issues, complexity)
+    count = 0
+    issues.each{|i| count = count.next if i['fields']['customfield_10025']['value'] == complexity }
+    count
+  end
+
 end
