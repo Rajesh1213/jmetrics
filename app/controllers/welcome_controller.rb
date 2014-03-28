@@ -31,7 +31,117 @@ class WelcomeController < ApplicationController
     @complexity_effort_hash = get_delivery_effort_data(all_complex_issues)
     #development effectiveness
     get_development_effectiveness_defects(project, from_date, to_date)
+
+    #Percentage Distribution of Efforts
+    get_percentage_distribution_efforts(@total_work_req_delivered)
   end
+
+  def get_percentage_distribution_efforts(total_work_req_delivered)
+    @analysis_effort = 0
+
+    @solution_design_effort = 0
+    @testcase_design_effort = 0
+    @total_design_phase_effort = 0
+
+    @analysis_review_effort = 0
+    @solution_design_review_effort = 0
+    @testcase_review_effort = 0
+    @code_review_effort = 0
+    @total_review_phase_effort = 0
+
+    @development_effort = 0
+
+    @peer_functional_testing_effort = 0
+    @prerelease_QA_testing_effort = 0
+    @total_testing_phase_effort = 0
+
+    total_work_req_delivered.each do |issue|
+      @analysis_effort += get_analysis_effort(issue)
+
+      design_effort = get_design_effort(issue)
+      @solution_design_effort += design_effort[0]
+      @testcase_design_effort += design_effort[1]
+      @total_design_phase_effort += design_effort[2]
+
+      review_effort = get_review_effort(issue)
+      @analysis_review_effort += review_effort[0]
+      @solution_design_review_effort += review_effort[1]
+      @testcase_review_effort += review_effort[2]
+      @code_review_effort += review_effort[3]
+      @total_review_phase_effort += review_effort[4]
+
+      @development_effort += get_development_effort(issue)
+      
+      testing_effort = get_testing_effort(issue)
+      @peer_functional_testing_effort += testing_effort[0]
+      @prerelease_qa_testing_effort += testing_effort[1]
+      @total_testing_phase_effort += testing_effort[2]
+
+    end
+  end
+
+  def get_testing_effort(issue)
+#    testing_keys = [10100,10101]
+    peer_functional_testing_keys = [10100]
+    prerelease_qa_testing_keys = [10101]
+
+    peer_functional_testing_effort = get_sum(peer_functional_testing_keys,issue)
+    prerelease_qa_testing_effort = get_sum(prerelease_qa_testing_keys,issue)
+    total_testing_phase_effort = peer_functional_testing_effort + prerelease_qa_testing_effort
+
+    [peer_functional_testing_effort, prerelease_qa_testing_effort, total_testing_phase_effort]
+  end
+
+  def get_development_effort(issue)
+    coding_keys = [10036]
+    get_sum(coding_keys, issue)
+  end
+
+  def get_review_effort(issue)
+#    review_keys = [10029,10034,10105,10106,10038]
+    analysis_review_keys = [10029]
+    solution_design_review_keys = [10034]
+    testcase_review_keys = [10105,10106]
+    code_review_keys = [10038]
+
+    analysis_review_effort = get_sum(analysis_review_keys, issue)
+    solution_design_review_effort = get_sum(solution_design_review_keys, issue)
+    testcase_review_effort = get_sum(testcase_review_keys, issue)
+    code_review_effort = get_sum(code_review_keys, issue)
+    total_review_phase_effort = analysis_review_effort + solution_design_review_effort + testcase_review_effort + code_review_effort
+
+    [analysis_review_effort, solution_design_review_effort, testcase_review_effort, code_review_effort, total_review_phase_effort]
+  end
+
+  def get_design_effort(issue)
+#    design_keys = [10032,10102]
+    solution_design_keys = [10032]
+    testcase_design_effort_keys = [10102]
+
+    solution_design_effort = get_sum(solution_design_keys, issue)
+    testcase_design_effort = get_sum(testcase_design_effort_keys, issue)
+    total_design_phase_effort = solution_design_effort + testcase_design_effort
+    
+    [solution_design_effort, testcase_design_effort, total_design_phase_effort]
+  end
+  
+  def get_analysis_effort(issue)
+    analysis_keys = [10028,10207]
+    get_sum(analysis_keys, issue)
+  end
+
+  def get_sum(arr,issue)
+    arr.each do |ele|
+      issue["fields"]["customfield_#{ele}"] = 0 if issue["fields"]["customfield_#{ele}"].nil?
+    end
+
+    sum = 0
+    arr.each do |ele|
+      sum += issue["fields"]["customfield_#{ele}"]
+    end
+    sum
+  end
+
 
   def work_request_delivery_cycle_time(total_work_requests_committed)
     @work_req_delayed = []

@@ -173,3 +173,426 @@
     "customfield_10035": "Developer",
     "aggregatetimespent": "Σ Time Spent"
 }
+
+
+#custom fields for https://seneca-global.atlassian.net
+
+{
+    "expand": "names,schema",
+    "startAt": 0,
+    "maxResults": 50,
+    "total": 1,
+    "issues": [
+        {
+            "expand": "editmeta,renderedFields,transitions,changelog,operations",
+            "id": "10314",
+            "self": "https://seneca-global.atlassian.net/rest/api/2/issue/10314",
+            "key": "UT-19",
+            "fields": {
+                "progress": {
+                    "progress": 97200,
+                    "total": 97200,
+                    "percent": 100
+                },
+                "summary": "Employee training record",
+                "issuetype": {
+                    "self": "https://seneca-global.atlassian.net/rest/api/2/issuetype/10003",
+                    "id": "10003",
+                    "description": "A new requirement of the product, which has yet to be developed.",
+                    "iconUrl": "https://seneca-global.atlassian.net/images/icons/issuetypes/newfeature.png",
+                    "name": "New Requirement",
+                    "subtask": false
+                },
+                "customfield_10038": 1,
+                "customfield_10039": {
+                    "self": "https://seneca-global.atlassian.net/rest/api/2/user?username=mukul.chourey",
+                    "name": "mukul.chourey",
+                    "emailAddress": "mukul.chourey@seneca-global.com",
+                    "avatarUrls": {
+                        "16x16": "https://seneca-global.atlassian.net/secure/useravatar?size=xsmall&avatarId=10122",
+                        "24x24": "https://seneca-global.atlassian.net/secure/useravatar?size=small&avatarId=10122",
+                        "32x32": "https://seneca-global.atlassian.net/secure/useravatar?size=medium&avatarId=10122",
+                        "48x48": "https://seneca-global.atlassian.net/secure/useravatar?avatarId=10122"
+                    },
+                    "displayName": "Mukul Chourey ",
+                    "active": true
+                },
+                "timespent": 97200,
+                "reporter": {
+                    "self": "https://seneca-global.atlassian.net/rest/api/2/user?username=mukul.chourey",
+                    "name": "mukul.chourey",
+                    "emailAddress": "mukul.chourey@seneca-global.com",
+                    "avatarUrls": {
+                        "16x16": "https://seneca-global.atlassian.net/secure/useravatar?size=xsmall&avatarId=10122",
+                        "24x24": "https://seneca-global.atlassian.net/secure/useravatar?size=small&avatarId=10122",
+                        "32x32": "https://seneca-global.atlassian.net/secure/useravatar?size=medium&avatarId=10122",
+                        "48x48": "https://seneca-global.atlassian.net/secure/useravatar?avatarId=10122"
+                    },
+                    "displayName": "Mukul Chourey ",
+                    "active": true
+                },
+                "customfield_10042": "2014-01-23",
+                "updated": "2014-02-23T20:36:38.000+0530",
+                "created": "2014-01-23T12:37:14.000+0530",
+                "customfield_10041": 3,
+                "priority": {
+                    "self": "https://seneca-global.atlassian.net/rest/api/2/priority/3",
+                    "iconUrl": "https://seneca-global.atlassian.net/images/icons/priorities/major.png",
+                    "name": "Major",
+                    "id": "3"
+                },
+                "description": null,
+                "customfield_10002": null,
+                "customfield_10040": null,
+                "customfield_10003": null,
+                "issuelinks": [],
+                "subtasks": [
+                    {
+                        "id": "10315",
+                        "key": "UT-20",
+                        "self": "https://seneca-global.atlassian.net/rest/api/2/issue/10315",
+                        "fields": {
+                            "summary": "test case design task for Training record",
+                            "status": {
+                                "self": "https://seneca-global.atlassian.net/rest/api/2/status/6",
+                                "description": "The issue is considered finished, the resolution is correct. Issues which are closed can be reopened.",
+                                "iconUrl": "https://seneca-global.atlassian.net/images/icons/statuses/closed.png",
+                                "name": "Closed",
+                                "id": "6",
+                                "statusCategory": {
+                                    "self": "https://seneca-global.atlassian.net/rest/api/2/statuscategory/3",
+                                    "id": 3,
+                                    "key": "done",
+                                    "colorName": "green",
+                                    "name": "Complete"
+                                }
+                            },
+                            "priority": {
+                                "self": "https://seneca-global.atlassian.net/rest/api/2/priority/3",
+                                "iconUrl": "https://seneca-global.atlassian.net/images/icons/priorities/major.png",
+                                "name": "Major",
+                                "id": "3"
+                            },
+                            "issuetype": {
+                                "self": "https://seneca-global.atlassian.net/rest/api/2/issuetype/10005",
+                                "id": "10005",
+                                "description": "Testing task that needs to be completed for a requirement or change request.",
+                                "iconUrl": "https://seneca-global.atlassian.net/images/icons/issuetypes/subtask.png",
+                                "name": "Testing Task",
+                                "subtask": true
+                            }
+                        }
+                    },
+                    {
+                        "id": "10316",
+                        "key": "UT-21",
+                        "self": "https://seneca-global.atlassian.net/rest/api/2/issue/10316",
+                        "fields": {
+                            "summary": "test case #34 ",
+                            "status": {
+                                "self": "https://seneca-global.atlassian.net/rest/api/2/status/4",
+                                "description": "This issue was once resolved, but the resolution was deemed incorrect. From here issues are either marked assigned or resolved.",
+                                "iconUrl": "https://seneca-global.atlassian.net/images/icons/statuses/reopened.png",
+                                "name": "Reopened",
+                                "id": "4",
+                                "statusCategory": {
+                                    "self": "https://seneca-global.atlassian.net/rest/api/2/statuscategory/2",
+                                    "id": 2,
+                                    "key": "new",
+                                    "colorName": "blue-gray",
+                                    "name": "New"
+                                }
+                            },
+                            "priority": {
+                                "self": "https://seneca-global.atlassian.net/rest/api/2/priority/3",
+                                "iconUrl": "https://seneca-global.atlassian.net/images/icons/priorities/major.png",
+                                "name": "Major",
+                                "id": "3"
+                            },
+                            "issuetype": {
+                                "self": "https://seneca-global.atlassian.net/rest/api/2/issuetype/10006",
+                                "id": "10006",
+                                "description": "A defect found in review phase.",
+                                "iconUrl": "https://seneca-global.atlassian.net/images/icons/issuetypes/bug.png",
+                                "name": "Review Defect",
+                                "subtask": true
+                            }
+                        }
+                    }
+                ],
+                "customfield_10008": null,
+                "status": {
+                    "self": "https://seneca-global.atlassian.net/rest/api/2/status/10011",
+                    "description": "The issue is in analysis review phase.",
+                    "iconUrl": "https://seneca-global.atlassian.net/images/icons/statuses/inprogress.png",
+                    "name": "Analysis Review",
+                    "id": "10011",
+                    "statusCategory": {
+                        "self": "https://seneca-global.atlassian.net/rest/api/2/statuscategory/1",
+                        "id": 1,
+                        "key": "undefined",
+                        "colorName": "medium-gray",
+                        "name": "No Category"
+                    }
+                },
+                "customfield_10007": null,
+                "customfield_10006": "21",
+                "labels": [],
+                "workratio": -1,
+                "project": {
+                    "self": "https://seneca-global.atlassian.net/rest/api/2/project/10100",
+                    "id": "10100",
+                    "key": "UT",
+                    "name": "UPP Test",
+                    "avatarUrls": {
+                        "16x16": "https://seneca-global.atlassian.net/secure/projectavatar?size=xsmall&pid=10100&avatarId=10011",
+                        "24x24": "https://seneca-global.atlassian.net/secure/projectavatar?size=small&pid=10100&avatarId=10011",
+                        "32x32": "https://seneca-global.atlassian.net/secure/projectavatar?size=medium&pid=10100&avatarId=10011",
+                        "48x48": "https://seneca-global.atlassian.net/secure/projectavatar?pid=10100&avatarId=10011"
+                    }
+                },
+                "environment": null,
+                "customfield_10014": null,
+                "aggregateprogress": {
+                    "progress": 378000,
+                    "total": 378000,
+                    "percent": 100
+                },
+                "lastViewed": "2014-02-23T20:36:38.420+0530",
+                "customfield_10015": null,
+                "customfield_10012": null,
+                "customfield_10013": null,
+                "components": [],
+                "timeoriginalestimate": null,
+                "customfield_10017": null,
+                "customfield_10016": null,
+                "customfield_10019": null,
+                "customfield_10018": null,
+                "votes": {
+                    "self": "https://seneca-global.atlassian.net/rest/api/2/issue/UT-19/votes",
+                    "votes": 0,
+                    "hasVoted": false
+                },
+                "fixVersions": [],
+                "resolution": null,
+                "resolutiondate": null,
+                "creator": {
+                    "self": "https://seneca-global.atlassian.net/rest/api/2/user?username=mukul.chourey",
+                    "name": "mukul.chourey",
+                    "emailAddress": "mukul.chourey@seneca-global.com",
+                    "avatarUrls": {
+                        "16x16": "https://seneca-global.atlassian.net/secure/useravatar?size=xsmall&avatarId=10122",
+                        "24x24": "https://seneca-global.atlassian.net/secure/useravatar?size=small&avatarId=10122",
+                        "32x32": "https://seneca-global.atlassian.net/secure/useravatar?size=medium&avatarId=10122",
+                        "48x48": "https://seneca-global.atlassian.net/secure/useravatar?avatarId=10122"
+                    },
+                    "displayName": "Mukul Chourey ",
+                    "active": true
+                },
+                "aggregatetimeoriginalestimate": null,
+                "customfield_10204": "0.0",
+                "customfield_10205": null,
+                "customfield_10206": null,
+                "customfield_10207": null,
+                "customfield_10108": null,
+                "duedate": null,
+                "customfield_10020": null,
+                "customfield_10021": "Not Started",
+                "customfield_10104": null,
+                "watches": {
+                    "self": "https://seneca-global.atlassian.net/rest/api/2/issue/UT-19/watchers",
+                    "watchCount": 1,
+                    "isWatching": true
+                },
+                "customfield_10024": {
+                    "self": "https://seneca-global.atlassian.net/rest/api/2/customFieldOption/10004",
+                    "value": "High",
+                    "id": "10004"
+                },
+                "customfield_10105": null,
+                "customfield_10106": null,
+                "customfield_10107": null,
+                "customfield_10103": null,
+                "customfield_10102": null,
+                "customfield_10029": 2,
+                "customfield_10101": null,
+                "customfield_10028": 10,
+                "customfield_10100": null,
+                "customfield_10027": {
+                    "self": "https://seneca-global.atlassian.net/rest/api/2/user?username=mukul.chourey",
+                    "name": "mukul.chourey",
+                    "emailAddress": "mukul.chourey@seneca-global.com",
+                    "avatarUrls": {
+                        "16x16": "https://seneca-global.atlassian.net/secure/useravatar?size=xsmall&avatarId=10122",
+                        "24x24": "https://seneca-global.atlassian.net/secure/useravatar?size=small&avatarId=10122",
+                        "32x32": "https://seneca-global.atlassian.net/secure/useravatar?size=medium&avatarId=10122",
+                        "48x48": "https://seneca-global.atlassian.net/secure/useravatar?avatarId=10122"
+                    },
+                    "displayName": "Mukul Chourey ",
+                    "active": true
+                },
+                "assignee": {
+                    "self": "https://seneca-global.atlassian.net/rest/api/2/user?username=mukul.chourey",
+                    "name": "mukul.chourey",
+                    "emailAddress": "mukul.chourey@seneca-global.com",
+                    "avatarUrls": {
+                        "16x16": "https://seneca-global.atlassian.net/secure/useravatar?size=xsmall&avatarId=10122",
+                        "24x24": "https://seneca-global.atlassian.net/secure/useravatar?size=small&avatarId=10122",
+                        "32x32": "https://seneca-global.atlassian.net/secure/useravatar?size=medium&avatarId=10122",
+                        "48x48": "https://seneca-global.atlassian.net/secure/useravatar?avatarId=10122"
+                    },
+                    "displayName": "Mukul Chourey ",
+                    "active": true
+                },
+                "customfield_10202": {
+                    "self": "https://seneca-global.atlassian.net/rest/api/2/customFieldOption/10102",
+                    "value": "Yes",
+                    "id": "10102"
+                },
+                "customfield_10201": null,
+                "aggregatetimeestimate": 0,
+                "versions": [],
+                "timeestimate": 0,
+                "customfield_10032": 8,
+                "customfield_10033": null,
+                "customfield_10030": {
+                    "self": "https://seneca-global.atlassian.net/rest/api/2/user?username=mukul.chourey",
+                    "name": "mukul.chourey",
+                    "emailAddress": "mukul.chourey@seneca-global.com",
+                    "avatarUrls": {
+                        "16x16": "https://seneca-global.atlassian.net/secure/useravatar?size=xsmall&avatarId=10122",
+                        "24x24": "https://seneca-global.atlassian.net/secure/useravatar?size=small&avatarId=10122",
+                        "32x32": "https://seneca-global.atlassian.net/secure/useravatar?size=medium&avatarId=10122",
+                        "48x48": "https://seneca-global.atlassian.net/secure/useravatar?avatarId=10122"
+                    },
+                    "displayName": "Mukul Chourey ",
+                    "active": true
+                },
+                "customfield_10031": {
+                    "self": "https://seneca-global.atlassian.net/rest/api/2/user?username=mukul.chourey",
+                    "name": "mukul.chourey",
+                    "emailAddress": "mukul.chourey@seneca-global.com",
+                    "avatarUrls": {
+                        "16x16": "https://seneca-global.atlassian.net/secure/useravatar?size=xsmall&avatarId=10122",
+                        "24x24": "https://seneca-global.atlassian.net/secure/useravatar?size=small&avatarId=10122",
+                        "32x32": "https://seneca-global.atlassian.net/secure/useravatar?size=medium&avatarId=10122",
+                        "48x48": "https://seneca-global.atlassian.net/secure/useravatar?avatarId=10122"
+                    },
+                    "displayName": "Mukul Chourey ",
+                    "active": true
+                },
+                "customfield_10036": 3,
+                "customfield_10037": {
+                    "self": "https://seneca-global.atlassian.net/rest/api/2/user?username=mukul.chourey",
+                    "name": "mukul.chourey",
+                    "emailAddress": "mukul.chourey@seneca-global.com",
+                    "avatarUrls": {
+                        "16x16": "https://seneca-global.atlassian.net/secure/useravatar?size=xsmall&avatarId=10122",
+                        "24x24": "https://seneca-global.atlassian.net/secure/useravatar?size=small&avatarId=10122",
+                        "32x32": "https://seneca-global.atlassian.net/secure/useravatar?size=medium&avatarId=10122",
+                        "48x48": "https://seneca-global.atlassian.net/secure/useravatar?avatarId=10122"
+                    },
+                    "displayName": "Mukul Chourey ",
+                    "active": true
+                },
+                "customfield_10034": null,
+                "aggregatetimespent": 378000,
+                "customfield_10035": {
+                    "self": "https://seneca-global.atlassian.net/rest/api/2/user?username=mukul.chourey",
+                    "name": "mukul.chourey",
+                    "emailAddress": "mukul.chourey@seneca-global.com",
+                    "avatarUrls": {
+                        "16x16": "https://seneca-global.atlassian.net/secure/useravatar?size=xsmall&avatarId=10122",
+                        "24x24": "https://seneca-global.atlassian.net/secure/useravatar?size=small&avatarId=10122",
+                        "32x32": "https://seneca-global.atlassian.net/secure/useravatar?size=medium&avatarId=10122",
+                        "48x48": "https://seneca-global.atlassian.net/secure/useravatar?avatarId=10122"
+                    },
+                    "displayName": "Mukul Chourey ",
+                    "active": true
+                }
+            }
+        }
+    ],
+    "names": {
+        "summary": "Summary",
+        "progress": "Progress",
+        "issuetype": "Issue Type",
+        "customfield_10038": "Code Review Effort",
+        "customfield_10039": "Tester",
+        "timespent": "Time Spent",
+        "reporter": "Reporter",
+        "customfield_10042": "Task Started Date",
+        "customfield_10041": "Release Effort",
+        "created": "Created",
+        "updated": "Updated",
+        "description": "Description",
+        "priority": "Priority",
+        "customfield_10002": "Flagged",
+        "customfield_10003": "Epic/Theme",
+        "customfield_10040": "Testing Effort",
+        "issuelinks": "Linked Issues",
+        "subtasks": "Sub-Tasks",
+        "customfield_10008": "Epic Link",
+        "customfield_10007": "Sprint",
+        "status": "Status",
+        "customfield_10006": "Rank",
+        "labels": "Labels",
+        "workratio": "Work Ratio",
+        "project": "Project",
+        "environment": "Environment",
+        "customfield_10014": "JIRA Capture User Agent",
+        "customfield_10015": "JIRA Capture Browser",
+        "lastViewed": "Last Viewed",
+        "aggregateprogress": "Σ Progress",
+        "customfield_10012": "Test Sessions",
+        "components": "Component/s",
+        "customfield_10013": "Raised During",
+        "timeoriginalestimate": "Original Estimate",
+        "customfield_10017": "JIRA Capture URL",
+        "customfield_10016": "JIRA Capture Operating System",
+        "customfield_10019": "JIRA Capture jQuery Version",
+        "customfield_10018": "JIRA Capture Screen Resolution",
+        "votes": "Votes",
+        "resolution": "Resolution",
+        "fixVersions": "Fix Version/s",
+        "resolutiondate": "Resolved",
+        "creator": "Creator",
+        "customfield_10204": "Test Estimate",
+        "aggregatetimeoriginalestimate": "Σ Original Estimate",
+        "customfield_10205": "Reference ID",
+        "customfield_10206": "Hold Time",
+        "customfield_10207": "QA Analysis Effort",
+        "duedate": "Due Date",
+        "customfield_10108": "Test Cases Planned To Execute",
+        "customfield_10020": "JIRA Capture Document Mode",
+        "customfield_10021": "Testing Status",
+        "customfield_10104": "Test Cases Planned",
+        "customfield_10105": "Test Review Effort for QA",
+        "customfield_10024": "Complexity",
+        "watches": "Watchers",
+        "customfield_10106": "Test Review Effort for Unit testing",
+        "customfield_10107": "Test Cases Actually Executed",
+        "customfield_10103": "Test Cases Designed",
+        "customfield_10029": "Analysis Review Effort",
+        "customfield_10102": "Test Case Design Effort",
+        "customfield_10028": "Analysis Effort",
+        "customfield_10101": "Pre-release QA Testing Effort",
+        "customfield_10027": "Analyst",
+        "customfield_10100": "Peer Functional Testing Effort",
+        "assignee": "Assignee",
+        "customfield_10202": "Is It Testable?",
+        "customfield_10201": "Test Cases Passed",
+        "aggregatetimeestimate": "Σ Remaining Estimate",
+        "versions": "Affects Version/s",
+        "timeestimate": "Remaining Estimate",
+        "customfield_10032": "Design Effort",
+        "customfield_10033": "Design Reviewer",
+        "customfield_10030": "Analysis Reviewer",
+        "customfield_10031": "Designer",
+        "customfield_10036": "Coding Effort",
+        "customfield_10037": "Code Reviewer",
+        "customfield_10034": "Design Review Effort",
+        "customfield_10035": "Developer",
+        "aggregatetimespent": "Σ Time Spent"
+    }
+}

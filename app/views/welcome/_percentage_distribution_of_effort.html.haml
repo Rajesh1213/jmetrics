@@ -8,60 +8,60 @@
   %tr
     %td Analysis
     %td Requirement & Impact Analysis
-    %td 1
-    %td 2
+    %td= @analysis_effort
+    %td= @analysis_effort
     %td 3
   / Design Row Start  
   %tr
     %td{:rowspan => 2} Design
     %td Solution Design
-    %td 10
-    %td{:rowspan => 2} 4
+    %td= @solution_design_effort
+    %td{:rowspan => 2}= @total_design_phase_effort
     %td{:rowspan => 2} 5
   %tr
     %td Test Case Design (QA/Unit Test)
-    %td 11
+    %td= @testcase_design_effort
   / Design Row end
   / Review Row Starts
   %tr
     %td{:rowspan => 4} Review
     %td Requirement/Impact Analysis Review
-    %td 12
-    %td{:rowspan => 4} 6
+    %td= @analysis_review_effort
+    %td{:rowspan => 4}= @total_review_phase_effort
     %td{:rowspan => 4} 7
   %tr
     %td Solution Design Review
-    %td 13
+    %td= @solution_design_review_effort
   %tr
     %td Test Case Review
-    %td 14
+    %td= @testcase_review_effort
   %tr
     %td Code Review
-    %td 15
+    %td= @code_review_effort
   / Review Row Ends  
   / Development row Starts
   %tr
     %td Development
     %td Coding/Self Unit Testing
-    %td 16
-    %td 17
+    %td= @development_effort
+    %td= @development_effort
     %td 18
   / Development row Ends
   / Testing Row Starts
   %tr
     %td{:rowspan => 2} Testing
     %td Peer Functional Testing
-    %td 19
-    %td{:rowspan => 2} 20
+    %td= @peer_functional_testing_effort
+    %td{:rowspan => 2}= @total_testing_phase_effort
     %td{:rowspan => 2} 21
   %tr
     %td Pre-Release/QA Testing
-    %td 22
+    %td= @prerelease_qa_testing_effort
   / Testing Row Ends
   / Defect Fix Row Starts
   %tr
     %td Defect Fix
-    %td 23
+    %td Rework
     %td 24
     %td 25
     %td 26
