@@ -52,7 +52,7 @@ class WelcomeController < ApplicationController
     @development_effort = 0
 
     @peer_functional_testing_effort = 0
-    @prerelease_QA_testing_effort = 0
+    @prerelease_qa_testing_effort = 0
     @total_testing_phase_effort = 0
 
     total_work_req_delivered.each do |issue|
