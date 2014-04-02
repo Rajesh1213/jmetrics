@@ -1,39 +1,38 @@
 class WelcomeController < ApplicationController
   before_filter :build_hash
   def index
-    if params[:from_date].present? && params[:to_date].present? &&  params[:Project]
+    if request.post? && params[:from_date].present? && params[:to_date].present? && params[:Project].present?
       from_date = get_date(params[:from_date])
       to_date = get_date(params[:to_date])
       project = params[:Project]
       @project = params[:Project]
-    else
-      from_date = Time.now.strftime("%Y-%m-%d")
-      to_date = Time.now.strftime("%Y-%m-%d")
-      project = 'UT'
-    end
-    #total_work_req_assigned
-    response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029","fields":["id","key"]}}')
-    parsed_response=JSON.parse(response)
-    @work_req_assigned = parsed_response['issues']
-    #work reqst committed
-    response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029 AND duedate IS NOT EMPTY"}}')
-    parsed_response = JSON.parse(response)
-    total = parsed_response['total']
-    @total_work_requests_committed = parsed_response['issues']
-    @work_req_committed = @total_work_requests_committed
-    # work_request_delivery_cycle_time
-    work_request_delivery_cycle_time(@total_work_requests_committed)
-    # delivery_management_effectiveness
-    all_complex_issues = get_all_complex_issues(@total_work_req_delivered)
-    #development effectiveness
-    @development_effectiveness = @total_work_req_delivered.present? ? get_development_effectiveness(@total_work_req_delivered, project) : 0
-    @complexity_cycle_hash = get_delivery_cycle_data(all_complex_issues)
-    @complexity_effort_hash = get_delivery_effort_data(all_complex_issues)
-    #development effectiveness
-    get_development_effectiveness_defects(project, from_date, to_date)
 
-    #Percentage Distribution of Efforts
-    get_percentage_distribution_efforts(@total_work_req_delivered)
+      #total_work_req_assigned
+      response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029","fields":["id","key"]}}')
+      parsed_response=JSON.parse(response)
+      @work_req_assigned = parsed_response['issues']
+      #work reqst committed
+      response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029 AND duedate IS NOT EMPTY"}}')
+      parsed_response = JSON.parse(response)
+      total = parsed_response['total']
+      @total_work_requests_committed = parsed_response['issues']
+      @work_req_committed = @total_work_requests_committed
+      # work_request_delivery_cycle_time
+      work_request_delivery_cycle_time(@total_work_requests_committed)
+      # delivery_management_effectiveness
+      all_complex_issues = get_all_complex_issues(@total_work_req_delivered)
+      #development effectiveness
+      @development_effectiveness = @total_work_req_delivered.present? ? get_development_effectiveness(@total_work_req_delivered, project) : 0
+      @complexity_cycle_hash = get_delivery_cycle_data(all_complex_issues)
+      @complexity_effort_hash = get_delivery_effort_data(all_complex_issues)
+      #development effectiveness
+      get_development_effectiveness_defects(project, from_date, to_date)
+
+      #Percentage Distribution of Efforts
+      get_percentage_distribution_efforts(@total_work_req_delivered)
+    else
+      render :template => 'welcome/index'
+    end
   end
 
   def get_percentage_distribution_efforts(total_work_req_delivered)

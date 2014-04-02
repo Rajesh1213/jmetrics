@@ -1,44 +1,45 @@
-.col-md-12
-  .col-md-12{:style => "margin:15px 0px 15px 0px; font-weight:bold; font-size: 16px; color:#555;"}
-    .col-md-4
-      = image_tag "http://blogs.atlassian.com/wp-content/uploads/Atlassian-ondemand-logo.png", :size => '25x25'
-      = @project
-    .col-md-4{:style => 'text-align:center;'}
-      Metrics of month: January 2014
-    .col-md-4{:style => 'text-align:right;'}
-      Project Lead:       
+- if request.post? && @project.present?
   .col-md-12
-    .panel.panel-default
-      .panel-heading Metric: Work request Delivery Cycle Time; Work Request Delivery Effort
-      .panel-body
-        / = render :partial => "work_req_cycle_knobs"
-        = render :partial => "work_req_del_cycle_time"
-        
-    / .panel.panel-default
-    /   .panel-heading Metric: Work Request Complexity
-    /   .panel-body
-    /     .col-md-12{:style => "text-align:center;"}
-    /       = render :partial => "workrequest_complexity_tree"
-    .panel.panel-default
-      .panel-heading Delivery Management Effectiveness
-      .panel-body
-        = render :partial => "delivery_management_effectiveness"
-    .panel.panel-default
-      .panel-heading Development Testing Effectiveness
-      .panel-body
-        = render :partial => "development_effectiveness"    
-    .panel.panel-default
-      .panel-heading Development Review Effectiveness
-      .panel-body
-        = render :partial => "development_review_effectiveness"
-        = render :partial => "defect_data_distribution"   
-    .panel.panel-default
-      .panel-heading Percentage Distribution of Efforts
-      .panel-body
-        = render :partial => "percentage_distribution_of_effort"  
-      %br
-    .panel.panel-default
-      .panel-heading Software Quality
-      .panel-body
-        = render :partial => "software_quality"  
-.clearfix
+    .col-md-12{:style => "margin:15px 0px 15px 0px; font-weight:bold; font-size: 16px; color:#555;"}
+      .col-md-4
+        = image_tag "http://blogs.atlassian.com/wp-content/uploads/Atlassian-ondemand-logo.png", :size => '25x25'
+        = @project
+      .col-md-4{:style => 'text-align:center;'}
+        Metrics of month: January 2014
+      .col-md-4{:style => 'text-align:right;'}
+        Project Lead:       
+    .col-md-12
+      .panel.panel-default
+        .panel-heading Metric: Work request Delivery Cycle Time; Work Request Delivery Effort
+        .panel-body
+          / = render :partial => "work_req_cycle_knobs"
+          = render :partial => "work_req_del_cycle_time"
+          
+      / .panel.panel-default
+      /   .panel-heading Metric: Work Request Complexity
+      /   .panel-body
+      /     .col-md-12{:style => "text-align:center;"}
+      /       = render :partial => "workrequest_complexity_tree"
+      .panel.panel-default
+        .panel-heading Delivery Management Effectiveness
+        .panel-body
+          = render :partial => "delivery_management_effectiveness"
+      .panel.panel-default
+        .panel-heading Development Testing Effectiveness
+        .panel-body
+          = render :partial => "development_effectiveness"    
+      .panel.panel-default
+        .panel-heading Development Review Effectiveness
+        .panel-body
+          = render :partial => "development_review_effectiveness"
+          = render :partial => "defect_data_distribution"   
+      .panel.panel-default
+        .panel-heading Percentage Distribution of Efforts
+        .panel-body
+          = render :partial => "percentage_distribution_of_effort"  
+        %br
+      .panel.panel-default
+        .panel-heading Software Quality
+        .panel-body
+          = render :partial => "software_quality"  
+  .clearfix
