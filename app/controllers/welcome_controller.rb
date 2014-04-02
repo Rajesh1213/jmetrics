@@ -8,11 +8,12 @@ class WelcomeController < ApplicationController
       @project = params[:Project]
 
       #total_work_req_assigned
-      response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029","fields":["id","key"]}}')
+      # response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029","fields":["id","key"]}}')
+      response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\\u0020\\\u0028NWF\\\u0029\\u002CDelivered\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CNew\\\u0020Requirement\\\u0020\\\u0028NWF\\\u0029\\u0029","fields":["id","key"]}}')
       parsed_response=JSON.parse(response)
       @work_req_assigned = parsed_response['issues']
       #work reqst committed
-      response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029 AND duedate IS NOT EMPTY"}}')
+      response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\\u0020\\\u0028NWF\\\u0029\\u002CDelivered\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CNew\\\u0020Requirement\\\u0020\\\u0028NWF\\\u0029\\u0029 AND duedate IS NOT EMPTY"}}')
       parsed_response = JSON.parse(response)
       total = parsed_response['total']
       @total_work_requests_committed = parsed_response['issues']

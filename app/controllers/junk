@@ -596,3 +596,26 @@
         "aggregatetimespent": "Σ Time Spent"
     }
 }
+
+
+
+//issue types
+New Requirement (NWF)
+Organizational Activity (NWF)
+Project Management (NWF)
+Project Meeting (NWF)
+Req: Delivered Defect (NWF)
+Training (NWF)
+Self Development (NWF)
+Change Request (NWF)
+Test Case Review Defect (NWF)
+Testing Task (NWF)
+Suggestion (NWF)
+Component (NWF)
+Unit Testing Defect (NWF)
+Delivered Defect (NWF)
+Review Defect (NWF)
+Testing Defect (NWF)
+Epic
+Story
+Data Defect
