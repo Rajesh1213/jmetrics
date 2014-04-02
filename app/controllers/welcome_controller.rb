@@ -9,11 +9,11 @@ class WelcomeController < ApplicationController
 
       #total_work_req_assigned
       # response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\u002CDelivered\\\u0020Defect\\u002CNew\\\u0020Requirement\\u0029","fields":["id","key"]}}')
-      response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\\u0020\\\u0028NWF\\\u0029\\u002CDelivered\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CNew\\\u0020Requirement\\\u0020\\\u0028NWF\\\u0029\\u0029","fields":["id","key"]}}')
+      response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\\u0020\\\u0028NWF\\\u0029\\u002CDelivered\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CNew\\\u0020Requirement\\\u0020\\\u0028NWF\\\u0029\\u0029","startAt":0,"maxResults":1000,"fields":["id","key"]}}')
       parsed_response=JSON.parse(response)
       @work_req_assigned = parsed_response['issues']
       #work reqst committed
-      response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\\u0020\\\u0028NWF\\\u0029\\u002CDelivered\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CNew\\\u0020Requirement\\\u0020\\\u0028NWF\\\u0029\\u0029 AND duedate IS NOT EMPTY"}}')
+      response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Change\\\u0020Request\\\u0020\\\u0028NWF\\\u0029\\u002CDelivered\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CNew\\\u0020Requirement\\\u0020\\\u0028NWF\\\u0029\\u0029 AND duedate IS NOT EMPTY","startAt":0,"maxResults":1000}}')
       parsed_response = JSON.parse(response)
       total = parsed_response['total']
       @total_work_requests_committed = parsed_response['issues']
@@ -155,7 +155,7 @@ class WelcomeController < ApplicationController
         resol_date = Time.parse(issue['fields']['resolutiondate'])
         due_date = Time.parse(issue['fields']['duedate'])
         issuetype = issue['fields']['issuetype']['name']
-        issue_complexity = issue['fields']['customfield_10024'].present? ? issue['fields']['customfield_10024']['value'] : 'Low'
+        issue_complexity = issue['fields']["customfield_#{t(:complexity)}"].present? ? issue['fields']["customfield_#{t(:complexity)}"]['value'] : 'Low'
         complexity << issue_complexity
         @complexity_requests_hash[issue_complexity] = @complexity_requests_hash[issue_complexity].blank? ? [issuetype] : @complexity_requests_hash[issue_complexity] + [issuetype]
         @total_review_effort += get_total_review_effort(issue)
@@ -174,7 +174,7 @@ class WelcomeController < ApplicationController
   end
 
   def get_development_effectiveness_defects(project, from_date, to_date)
-    response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Review\\\u0020Defect\\u002CDelivered\\\u0020Defect\\u002CTesting\\\u0020Defect\\u0029 AND duedate IS NOT EMPTY"}}')
+    response = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Review\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CDelivered\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CTesting\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u0029 AND duedate IS NOT EMPTY"}}')
     parsed_response=JSON.parse(response)
     total_work_req_delivered = []
     complexity = []
@@ -233,10 +233,9 @@ class WelcomeController < ApplicationController
   #returns {'high'=>[min,max,avg]} in seconds. use a helper in view to convert to days/hrs
   def get_delivery_cycle_data(all_complex_issues)
     complexity_cycle_hash = {}
-
     all_complex_issues.each_pair do |key,value|
-      cycle_time = all_complex_issues[key].map{|ele| get_cycle_time(ele['fields']['resolutiondate'], ele['fields']['customfield_10042'], ele['fields']['customfield_10206']) }
-      complexity_cycle_hash[key] = [cycle_time.min,cycle_time.max,cycle_time.sum/cycle_time.count]
+      cycle_time = all_complex_issues[key].map{|ele| get_cycle_time(ele['fields']['resolutiondate'], ele['fields']['customfield_10042'], ele['fields']['customfield_11562']) } 
+      # complexity_cycle_hash[key] = [cycle_time.min,cycle_time.max,cycle_time.sum/cycle_time.count]
     end
     return complexity_cycle_hash
   end
@@ -252,15 +251,17 @@ class WelcomeController < ApplicationController
 
   def get_cycle_time(resolution_date, start_date, hold_time)
     hold_time_in_seconds =  hold_time.nil? ? 0 : hold_time*24*60*60
-    Time.parse(resolution_date) - Time.parse(start_date) - hold_time_in_seconds
+    resolutiondate = resolution_date.nil? ? 0 : Time.parse(resolution_date)
+    startdate = start_date.nil? ? 0 : Time.parse(start_date)
+    resolutiondate - startdate - hold_time_in_seconds
   end
 
   #returns hash
   def get_all_complex_issues(total_work_requests_delivered)
     all_complex_issues = {}
     total_work_requests_delivered.each do |issue|
-      if issue['fields']['customfield_10024'].present?
-        all_complex_issues[issue['fields']['customfield_10024']['value']] = all_complex_issues[issue['fields']['customfield_10024']['value']].blank? ? [issue] : all_complex_issues[issue['fields']['customfield_10024']['value']] + [issue]
+      if issue['fields']["customfield_#{t(:complexity)}"].present?
+        all_complex_issues[issue['fields']["customfield_#{t(:complexity)}"]['value']] = all_complex_issues[issue['fields']["customfield_#{t(:complexity)}"]['value']].blank? ? [issue] : all_complex_issues[issue['fields']["customfield_#{t(:complexity)}"]['value']] + [issue]
       end
     end
     all_complex_issues
@@ -280,38 +281,38 @@ class WelcomeController < ApplicationController
   end
 
   def get_sub_tasks(from_date, to_date, parent_key, project)
-    sub_tasks = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND duedate IS NOT EMPTY AND parent = '"#{parent_key}"'","fields":["id","key","duedate","resolutiondate","issuetype","customfield_10024","timespent"]}}')
+    sub_tasks = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND duedate IS NOT EMPTY AND parent = '"#{parent_key}"'","fields":["id","key","duedate","resolutiondate","issuetype","customfield_11352","timespent"]}}')
     sub_tasks = JSON.parse(sub_tasks)
     sub_tasks['issues']
   end
 
   def get_testing_tasks(issue_parent_ids,project)
     if issue_parent_ids.length > 0 
-      testing_tasks = post_search('search', '{"jql":"project='"#{project}"' AND type = Testing\\\u0020Task AND parent in \\u0028'"#{issue_parent_ids}"'\\u0029"}')
+      testing_tasks = post_search('search', '{"jql":"project='"#{project}"' AND type = Testing\\\u0020Task\\\u0020\\\u0028NWF\\\u0029 AND parent in \\u0028'"#{issue_parent_ids}"'\\u0029"}')
     end
   end
 
   def get_testing_defects(issue_parent_ids,project)
     if issue_parent_ids.length > 0 
-      testing_tasks = post_search('search', '{"jql":"project='"#{project}"' AND type = Testing\\\u0020Defect AND parent in \\u0028'"#{issue_parent_ids}"'\\u0029"}')
+      testing_tasks = post_search('search', '{"jql":"project='"#{project}"' AND type = Testing\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029 AND parent in \\u0028'"#{issue_parent_ids}"'\\u0029"}')
     end
   end
 
   def build_development_effectiveness_hash(testing_tasks)
     planned_count = 0
-    testing_tasks['issues'].map{|issue| planned_count += issue['fields']['customfield_10104'].to_i }
+    testing_tasks['issues'].map{|issue| planned_count += issue['fields']["customfield_#{t(:TestDesignPlanned)}"].to_i }
     $development_effectiveness['Test Design Planned'] = planned_count
     #Test Design Developed
     tdd = 0 
-    testing_tasks['issues'].map{|issue| tdd += issue['fields']['customfield_10029'].to_i }
+    testing_tasks['issues'].map{|issue| tdd += issue['fields']["customfield_#{t(:TestDesignDeveloped)}"].to_i }
     $development_effectiveness['Test Design Developed'] = tdd
     #Test Cases Planned for Execution
     pte = 0 
-    testing_tasks['issues'].map{|issue| pte += issue['fields']['customfield_10108'].to_i }
+    testing_tasks['issues'].map{|issue| pte += issue['fields']["customfield_#{t(:TestCasesPlannedForExecution)}"].to_i }
     $development_effectiveness['Test Cases Planned for Execution'] = pte
     #Test Cases Actually Executed
     tae = 0
-    testing_tasks['issues'].map{|issue| tae += issue['fields']['customfield_10107'].to_i }
+    testing_tasks['issues'].map{|issue| tae += issue['fields']["customfield_#{t(:TestCasesActuallyExecuted)}"].to_i }
     $development_effectiveness['Test Cases Actually Executed'] = tae
   end
 

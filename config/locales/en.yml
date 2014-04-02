@@ -21,3 +21,9 @@
 
 en:
   hello: "Hello world"
+  complexity: "11352"
+  TestDesignPlanned: "11353"
+  TestDesignDeveloped: "11356"
+  TestCasesPlannedForExecution: "11577"
+  TestCasesActuallyExecuted: "11354"
+
