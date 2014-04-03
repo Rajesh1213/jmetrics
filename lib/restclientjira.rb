@@ -1,6 +1,6 @@
 module RestClientJira
-  USERNAME = ''
-  PASSWORD = ''
+  USERNAME = 'vishnu.konakalla'
+  PASSWORD = 'seneca@23'
 
   #this is a old url  
   REQUEST_URL = "https://senecaglobal.jira.com/rest/api/2"
