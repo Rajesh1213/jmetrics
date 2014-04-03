@@ -46,4 +46,8 @@ module ApplicationHelper
     count
   end
 
+  def get_percentage(val1, val2)
+    number_to_percentage(((val1/val2)*100).round(2), format: "%n %")
+  end
+
 end
