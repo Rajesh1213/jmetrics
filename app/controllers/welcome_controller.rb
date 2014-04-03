@@ -183,7 +183,8 @@ class WelcomeController < ApplicationController
         resol_date = Time.parse(issue['fields']['resolutiondate'])
         due_date = Time.parse(issue['fields']['duedate'])
         issuetype = issue['fields']['issuetype']['name']
-        issue_complexity = issue['fields']['customfield_10025'].present? ? issue['fields']['customfield_10025']['value'] : 'Low'
+        puts issue['fields']["customfield_#{t(:complexity)}"].inspect
+        issue_complexity = issue['fields']["customfield_#{t(:complexity)}"].present? ? issue['fields']["customfield_#{t(:complexity)}"]['value'] : 'Low'
         complexity << issue_complexity
         @complexity_defects_hash[issue_complexity] = @complexity_defects_hash[issue_complexity].blank? ? [issuetype] : @complexity_defects_hash[issue_complexity] + [issuetype]
         if resol_date > due_date || resol_date <= due_date
@@ -195,18 +196,18 @@ class WelcomeController < ApplicationController
     @defect_counts = Hash.new(0)
     defects.each { |name| @defect_counts[name] += 1 }
     @review_defects = total_work_req_delivered.select do |ele|
-      ele['fields']['issuetype']['name'] == "Review Defect"
+      ele['fields']['issuetype']['name'] == "Review Defect (NWF)"
     end
     @delivered_defects = total_work_req_delivered.select do |ele|
-      ele['fields']['issuetype']['name'] == "Delivered Defect"
+      ele['fields']['issuetype']['name'] == "Delivered Defect (NWF)"
     end
     @testing_defects = total_work_req_delivered.select do |ele|
-      ele['fields']['issuetype']['name'] == "Testing Defect"
+      ele['fields']['issuetype']['name'] == "Testing Defect (NWF)"
     end
     @inprocess_defects = @review_defects + @testing_defects
     
-    #@total_review_effort in seconds
-    # @total_review_effort = review_defects.map{|ele| ele['fields']['timespent']}.sum
+    # @total_review_effort in seconds
+    @total_review_effort = ((@review_defects.map{|ele| ele['fields']['timespent']}.sum).to_f/3600.to_f).round(2)
 
     #Defect Data Distribution table: eg:{"Low"=>["Delivered Defect", "Testing Defect", "Delivered Defect", "Review Defect"]}
   end
@@ -232,11 +233,11 @@ class WelcomeController < ApplicationController
   #returns {'high'=>[min,max,avg]} in seconds. use a helper in view to convert to days/hrs
   def get_delivery_cycle_data(all_complex_issues)
     complexity_cycle_hash = {}
-    all_complex_issues.each_pair do |key,value|
-      cycle_time = all_complex_issues[key].map{|ele| get_cycle_time(ele["fields"]["resolutiondate"], ele["fields"]["customfield_#{t(:Task_Started_Date)}"], ele["fields"]["customfield_#{t(:Hold_Time)}"])}
-      complexity_cycle_hash[key] = [cycle_time.min,cycle_time.max,cycle_time.sum/cycle_time.count]
-    end
-    return complexity_cycle_hash
+    # all_complex_issues.each_pair do |key,value|
+    #   cycle_time = all_complex_issues[key].map{|ele| get_cycle_time(ele["fields"]["resolutiondate"], ele["fields"]["customfield_#{t(:Task_Started_Date)}"], ele["fields"]["customfield_#{t(:Hold_Time)}"])}
+    #   complexity_cycle_hash[key] = [cycle_time.min,cycle_time.max,cycle_time.sum/cycle_time.count]
+    # end
+    # return complexity_cycle_hash
   end
 
   def get_delivery_effort_data(all_complex_issues)
@@ -249,13 +250,13 @@ class WelcomeController < ApplicationController
   end
 
   def get_cycle_time(resolution_date, start_date, hold_time)
-    hold_time_in_seconds =  hold_time.nil? ? 0 : hold_time*24*60*60
-    Time.parse(resolution_date) - Time.parse(start_date) - hold_time_in_seconds
+    # hold_time_in_seconds =  hold_time.nil? ? 0 : hold_time*24*60*60
+    # Time.parse(resolution_date) - Time.parse(start_date) - hold_time_in_seconds
 
-#    hold_time_in_seconds =  hold_time.nil? ? 0 : hold_time*24*60*60
-#    resolutiondate = resolution_date.nil? ? 0 : Time.parse(resolution_date)
-#    startdate = start_date.nil? ? 0 : Time.parse(start_date)
-#    resolutiondate - startdate - hold_time_in_seconds
+   hold_time_in_seconds =  hold_time.nil? ? 0 : hold_time*24*60*60
+   resolutiondate = resolution_date.nil? ? 0 : Time.parse(resolution_date)
+   startdate = start_date.nil? ? 0 : Time.parse(start_date)
+   resolutiondate - startdate - hold_time_in_seconds
   end
 
   #returns hash

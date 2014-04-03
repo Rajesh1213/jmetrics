@@ -21,7 +21,7 @@ module ApplicationHelper
   end
   
   def get_inprocess_defects(defect_counts)
-    defect_counts['Review Defect'] + defect_counts['Testing Defect']
+    defect_counts['Review Defect (NWF)'] + defect_counts['Testing Defect (NWF)']
   end
 
   def get_review_efficiency(review_defects, review_effort)
@@ -42,7 +42,7 @@ module ApplicationHelper
 
   def get_complexity_count(issues, complexity)
     count = 0
-    issues.each{|i| count = count.next if i['fields']['customfield_10025']['value'] == complexity }
+    issues.each{|i| count = count.next if i['fields']["customfield_#{t(:Severity)}"]['value'] == complexity }
     count
   end
 

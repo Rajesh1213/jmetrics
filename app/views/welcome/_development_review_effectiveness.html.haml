@@ -12,13 +12,14 @@
     %th Defect Removal Efficiency (%)
   %tr
     %td Jan 2014
-    %td= @defect_counts['Review Defect']
+    %td= @defect_counts['Review Defect (NWF)']
     %td= @total_review_effort
-    %td= @defect_counts['Testing Defect']
+    %td= @defect_counts['Testing Defect (NWF)']
     - inprocess_defects = get_inprocess_defects(@defect_counts)
     %td= inprocess_defects
-    %td= @defect_counts['Delivered Defect']
-    %td= get_review_efficiency(@defect_counts['Review Defect'],@total_review_effort )
-    %td= get_review_effectiveness(@defect_counts['Review Defect'], inprocess_defects)
-    %td= get_testing_effectiveness(@defect_counts['Testing Defect'], inprocess_defects)
-    %td= get_defect_removal_efficiency(inprocess_defects, @defect_counts['Delivered Defect'])
+    %td= @defect_counts['Delivered Defect (NWF)']
+    %td= get_review_efficiency(@defect_counts['Review Defect (NWF)'],@total_review_effort )
+    %td= get_review_effectiveness(@defect_counts['Review Defect (NWF)'], inprocess_defects)
+    %td= get_testing_effectiveness(@defect_counts['Testing Defect (NWF)'], inprocess_defects)
+    %td= get_defect_removal_efficiency(inprocess_defects, @defect_counts['Delivered Defect (NWF)'])
+= @defect_counts
