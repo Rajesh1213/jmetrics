@@ -30,13 +30,13 @@ class WelcomeController < ApplicationController
       get_development_effectiveness_defects(project, from_date, to_date)
 
       #Percentage Distribution of Efforts
-      get_percentage_distribution_efforts(@total_work_req_delivered)
+      get_percentage_distribution_efforts(@total_work_req_delivered, project, from_date, to_date)
     else
       render :template => 'welcome/index'
     end
   end
 
-  def get_percentage_distribution_efforts(total_work_req_delivered)
+  def get_percentage_distribution_efforts(total_work_req_delivered, project, from_date, to_date)
     @analysis_effort = 0
 
     @solution_design_effort = 0
@@ -76,11 +76,24 @@ class WelcomeController < ApplicationController
       @peer_functional_testing_effort += testing_effort[0]
       @prerelease_qa_testing_effort += testing_effort[1]
       @total_testing_phase_effort += testing_effort[2]
+
     end
+
+    #defect_fix_effort in hours
+    @defect_fix_effort = get_defect_fix_effort(project, from_date, to_date)
+
+    @total_effort = @analysis_effort + @total_design_phase_effort + @total_review_phase_effort + @development_effort + @total_testing_phase_effort + @defect_fix_effort
+  end
+
+  def get_defect_fix_effort(project, from_date, to_date)
+    #issuetype in ("Req: Delivered Defect (NWF)","Data Defect","Test Case Review Defect (NWF)","Testing Defect (NWF)","Review Defect (NWF)")
+    defects = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Test\\\u0020Case\\\u0020Review\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CReview\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CTesting\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CReq\\\u003A\\\u0020Delivered\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CData\\\u0020Defect\\u0029 AND duedate IS NOT EMPTY","startAt":0,"maxResults":1000}}')
+    defects = parsed_response=JSON.parse(defects)['issues']
+    time_spent = defects.map{|defect| defect['fields']['timespent']}.sum
+    (time_spent.to_f/3600.to_f).round(2)
   end
 
   def get_testing_effort(issue)
-#    testing_keys = [10100,10101]
     peer_functional_testing_keys = [t(:Peer_Functional_Testing_Effort)]
     prerelease_qa_testing_keys = [t(:Pre_Release_QA_Testing_Effort)]
 
@@ -97,7 +110,6 @@ class WelcomeController < ApplicationController
   end
 
   def get_review_effort(issue)
-#    review_keys = [10029,10034,10105,10106,10038]
     analysis_review_keys = [t(:Analysis_Review_Effort)]
     solution_design_review_keys = [t(:Design_Review_Effort)]
     testcase_review_keys = [t(:Test_Review_Effort_for_QA),t(:Test_Review_Effort_for_Unit_testing)]
@@ -113,7 +125,6 @@ class WelcomeController < ApplicationController
   end
 
   def get_design_effort(issue)
-#    design_keys = [10032,10102]
     solution_design_keys = [t(:Design_Effort)]
     testcase_design_effort_keys = [t(:Test_Case_Design_Effort)]
 
@@ -183,7 +194,6 @@ class WelcomeController < ApplicationController
         resol_date = Time.parse(issue['fields']['resolutiondate'])
         due_date = Time.parse(issue['fields']['duedate'])
         issuetype = issue['fields']['issuetype']['name']
-        puts issue['fields']["customfield_#{t(:complexity)}"].inspect
         issue_complexity = issue['fields']["customfield_#{t(:complexity)}"].present? ? issue['fields']["customfield_#{t(:complexity)}"]['value'] : 'Low'
         complexity << issue_complexity
         @complexity_defects_hash[issue_complexity] = @complexity_defects_hash[issue_complexity].blank? ? [issuetype] : @complexity_defects_hash[issue_complexity] + [issuetype]
@@ -233,11 +243,11 @@ class WelcomeController < ApplicationController
   #returns {'high'=>[min,max,avg]} in seconds. use a helper in view to convert to days/hrs
   def get_delivery_cycle_data(all_complex_issues)
     complexity_cycle_hash = {}
-    # all_complex_issues.each_pair do |key,value|
-    #   cycle_time = all_complex_issues[key].map{|ele| get_cycle_time(ele["fields"]["resolutiondate"], ele["fields"]["customfield_#{t(:Task_Started_Date)}"], ele["fields"]["customfield_#{t(:Hold_Time)}"])}
-    #   complexity_cycle_hash[key] = [cycle_time.min,cycle_time.max,cycle_time.sum/cycle_time.count]
-    # end
-    # return complexity_cycle_hash
+    all_complex_issues.each_pair do |key,value|
+      cycle_time = all_complex_issues[key].map{|ele| get_cycle_time(ele["fields"]["resolutiondate"], ele["fields"]["customfield_#{t(:Task_Started_Date)}"], ele["fields"]["customfield_#{t(:Hold_Time)}"])}
+      complexity_cycle_hash[key] = [cycle_time.min,cycle_time.max,cycle_time.sum/cycle_time.count]
+    end
+    return complexity_cycle_hash
   end
 
   def get_delivery_effort_data(all_complex_issues)
@@ -252,11 +262,11 @@ class WelcomeController < ApplicationController
   def get_cycle_time(resolution_date, start_date, hold_time)
     # hold_time_in_seconds =  hold_time.nil? ? 0 : hold_time*24*60*60
     # Time.parse(resolution_date) - Time.parse(start_date) - hold_time_in_seconds
-
-   hold_time_in_seconds =  hold_time.nil? ? 0 : hold_time*24*60*60
-   resolutiondate = resolution_date.nil? ? 0 : Time.parse(resolution_date)
-   startdate = start_date.nil? ? 0 : Time.parse(start_date)
-   resolutiondate - startdate - hold_time_in_seconds
+    return 0 if start_date.nil?
+    hold_time_in_seconds =  hold_time.nil? ? 0 : hold_time*24*60*60
+    resolutiondate = resolution_date.nil? ? 0 : Time.parse(resolution_date)
+    startdate = start_date.nil? ? 0 : Time.parse(start_date)
+    resolutiondate - startdate - hold_time_in_seconds
   end
 
   #returns hash

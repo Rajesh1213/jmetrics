@@ -10,14 +10,14 @@
     %td Requirement & Impact Analysis
     %td= @analysis_effort
     %td= @analysis_effort
-    %td 3
+    %td= get_percentage(@analysis_effort, @total_effort)
   / Design Row Start  
   %tr
     %td{:rowspan => 2} Design
     %td Solution Design
     %td= @solution_design_effort
     %td{:rowspan => 2}= @total_design_phase_effort
-    %td{:rowspan => 2} 5
+    %td{:rowspan => 2}= get_percentage(@total_design_phase_effort, @total_effort)
   %tr
     %td Test Case Design (QA/Unit Test)
     %td= @testcase_design_effort
@@ -28,7 +28,7 @@
     %td Requirement/Impact Analysis Review
     %td= @analysis_review_effort
     %td{:rowspan => 4}= @total_review_phase_effort
-    %td{:rowspan => 4} 7
+    %td{:rowspan => 4}= get_percentage(@total_review_phase_effort, @total_effort)
   %tr
     %td Solution Design Review
     %td= @solution_design_review_effort
@@ -45,7 +45,7 @@
     %td Coding/Self Unit Testing
     %td= @development_effort
     %td= @development_effort
-    %td 18
+    %td= get_percentage(@development_effort, @total_effort)
   / Development row Ends
   / Testing Row Starts
   %tr
@@ -53,7 +53,7 @@
     %td Peer Functional Testing
     %td= @peer_functional_testing_effort
     %td{:rowspan => 2}= @total_testing_phase_effort
-    %td{:rowspan => 2} 21
+    %td{:rowspan => 2}= get_percentage(@total_testing_phase_effort, @total_effort)
   %tr
     %td Pre-Release/QA Testing
     %td= @prerelease_qa_testing_effort
@@ -62,16 +62,17 @@
   %tr
     %td Defect Fix
     %td Rework
-    %td 24
-    %td 25
-    %td 26
+    %td= @defect_fix_effort
+    %td= @defect_fix_effort
+    %td= get_percentage(@defect_fix_effort,@total_effort)
   / Defect Fix Row Ends
   / Total Row Starts
   %tr
     %td Total
-    %td 27
-    %td 28
-    %td 29
-    %td 30
+    %td 
+    %td 
+      %b= @total_effort
+    %td
+    %td
   / Total Row Ends  
 
