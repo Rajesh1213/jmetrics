@@ -331,6 +331,7 @@ class WelcomeController < ApplicationController
 
   def build_testing_defect_hash(testing_defects)
    puts "testing_defects =======> #{testing_defects.length.inspect}"
+   $development_effectiveness['Defects in Test Design'] = testing_defects.length
   end
   
   def build_hash
