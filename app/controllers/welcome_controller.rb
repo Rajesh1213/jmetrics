@@ -338,5 +338,8 @@ class WelcomeController < ApplicationController
     $development_effectiveness = {"Test Design Planned" => 0,"Test Design Developed" => 0,"Defects in Test Design" => 0,
                                 "Test Cases Planned for Execution" => 0,"Test Cases Actually Executed" => 0,"Test Execution (%)" => 0,
                                 "Test Coverage (%)" => 0}
-  end                                
+  end
+
+  def credits
+  end                            
 end
