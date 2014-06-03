@@ -86,10 +86,10 @@ class WelcomeController < ApplicationController
   end
 
   def get_defect_fix_effort(project, from_date, to_date)
-    #issuetype in ("Req: Delivered Defect (NWF)","Data Defect","Test Case Review Defect (NWF)","Testing Defect (NWF)","Review Defect (NWF)")
-    defects = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Test\\\u0020Case\\\u0020Review\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CReview\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CTesting\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CReq\\\u003A\\\u0020Delivered\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CData\\\u0020Defect\\u0029 AND duedate IS NOT EMPTY","startAt":0,"maxResults":1000}}')
+    #issuetype in ("Req: Delivered Defect (NWF)","Data Defect (NWF)","Test Case Review Defect (NWF)","Testing Defect (NWF)","Review Defect (NWF)")
+    defects = post_search('search','{"jql":"project='"#{project}"' AND created>='"#{from_date}"' AND created<='"#{to_date}"' AND type IN \\u0028Test\\\u0020Case\\\u0020Review\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CReview\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CTesting\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CReq\\\u003A\\\u0020Delivered\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u002CData\\\u0020Defect\\\u0020\\\u0028NWF\\\u0029\\u0029 AND duedate IS NOT EMPTY","startAt":0,"maxResults":1000}}')
     defects = parsed_response=JSON.parse(defects)['issues']
-    time_spent = defects.map{|defect| defect['fields']['timespent']}.sum
+    time_spent = defects.map{|defect| defect['fields']['timespent']}.compact.sum
     (time_spent.to_f/3600.to_f).round(2)
   end
 
@@ -217,7 +217,7 @@ class WelcomeController < ApplicationController
     @inprocess_defects = @review_defects + @testing_defects
     
     # @total_review_effort in seconds
-    @total_review_effort = ((@review_defects.map{|ele| ele['fields']['timespent']}.sum).to_f/3600.to_f).round(2)
+    @total_review_effort = ((@review_defects.map{|ele| ele['fields']['timespent']}.compact.sum).to_f/3600.to_f).round(2)
 
     #Defect Data Distribution table: eg:{"Low"=>["Delivered Defect", "Testing Defect", "Delivered Defect", "Review Defect"]}
   end
@@ -244,7 +244,7 @@ class WelcomeController < ApplicationController
   def get_delivery_cycle_data(all_complex_issues)
     complexity_cycle_hash = {}
     all_complex_issues.each_pair do |key,value|
-      cycle_time = all_complex_issues[key].map{|ele| get_cycle_time(ele["fields"]["resolutiondate"], ele["fields"]["customfield_#{t(:Task_Started_Date)}"], ele["fields"]["customfield_#{t(:Hold_Time)}"])}
+      cycle_time = all_complex_issues[key].map{|ele| get_cycle_time(ele["fields"]["resolutiondate"], ele["fields"]["customfield_#{t(:Task_Started_Date)}"], ele["fields"]["customfield_#{t(:Hold_Time)}"])}.compact
       complexity_cycle_hash[key] = [cycle_time.min,cycle_time.max,cycle_time.sum/cycle_time.count]
     end
     return complexity_cycle_hash
@@ -253,7 +253,7 @@ class WelcomeController < ApplicationController
   def get_delivery_effort_data(all_complex_issues)
     complexity_effort_hash = {}
     all_complex_issues.each_pair do |key,value|
-      effort_time = all_complex_issues[key].map{|ele| ele['fields']['timespent']}
+      effort_time = all_complex_issues[key].map{|ele| ele['fields']['timespent']}.compact
       complexity_effort_hash[key] = [effort_time.min,effort_time.max,effort_time.sum/effort_time.count]
     end
     return complexity_effort_hash
@@ -330,7 +330,6 @@ class WelcomeController < ApplicationController
   end
 
   def build_testing_defect_hash(testing_defects)
-   puts "testing_defects =======> #{testing_defects.length.inspect}"
    $development_effectiveness['Defects in Test Design'] = testing_defects.length
   end
   
